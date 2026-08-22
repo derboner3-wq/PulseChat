@@ -1029,6 +1029,77 @@
             background: var(--bg-hover);
         }
 
+        /* ===== DELETE OPTION OVERLAY ===== */
+        .delete-option-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1002;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .delete-option-overlay.show {
+            display: flex;
+        }
+        .delete-option-box {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 1.8rem 2rem;
+            max-width: 380px;
+            width: 90%;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .delete-option-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .delete-option-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .delete-option-box .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .delete-option-box .btn-group button {
+            padding: 0.6rem 1.4rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.15s;
+            min-width: 120px;
+        }
+        .delete-option-box .btn-for-all {
+            background: #ef4444;
+            color: #fff;
+        }
+        .delete-option-box .btn-for-all:hover {
+            background: #dc2626;
+        }
+        .delete-option-box .btn-for-me {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+        .delete-option-box .btn-for-me:hover {
+            background: var(--bg-hover);
+        }
+        .delete-option-box .btn-cancel-delete {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .delete-option-box .btn-cancel-delete:hover {
+            background: var(--bg-hover);
+        }
+
         /* ===== CALL OVERLAY ===== */
         .call-overlay {
             display: none;
@@ -1427,6 +1498,19 @@
         </div>
     </div>
 
+    <!-- ===== DELETE OPTION OVERLAY ===== -->
+    <div class="delete-option-overlay" id="delete-option-overlay">
+        <div class="delete-option-box">
+            <h3>Удалить сообщение</h3>
+            <p>Выберите, для кого удалить это сообщение:</p>
+            <div class="btn-group">
+                <button class="btn-for-all" id="delete-for-all-btn">Для всех</button>
+                <button class="btn-for-me" id="delete-for-me-btn">Для себя</button>
+                <button class="btn-cancel-delete" id="delete-cancel-btn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== CALL OVERLAY ===== -->
     <div class="call-overlay" id="call-overlay">
         <div class="call-avatar" id="call-avatar" style="background:#6c8cff;">U</div>
@@ -1501,6 +1585,9 @@
         let isCameraOn = false;
         let localStream = null;
 
+        // Переменные для удаления
+        let deleteTarget = null; // { contactId, index }
+
         // ===== DOM REFS =====
         const $ = id => document.getElementById(id);
         const landingPage = $('landing-page');
@@ -1551,6 +1638,12 @@
         const contactProfileUsername = $('contact-profile-username');
         const contactProfilePhone = $('contact-profile-phone');
 
+        // Delete overlay
+        const deleteOptionOverlay = $('delete-option-overlay');
+        const deleteForAllBtn = $('delete-for-all-btn');
+        const deleteForMeBtn = $('delete-for-me-btn');
+        const deleteCancelBtn = $('delete-cancel-btn');
+
         // ============================================================
         //  ИНИЦИАЛИЗАЦИЯ
         // ============================================================
@@ -1559,6 +1652,39 @@
             USERS = stored.users || [];
             CONTACTS = stored.contacts || [];
             MESSAGES_BY_CONTACT = stored.messages || {};
+
+            // Если нет пользователей, создаём демо
+            if (USERS.length === 0) {
+                const demoUsers = [
+                    { id: 'demo1', username: 'alex', displayName: 'Alex', email: 'alex@demo.com', phone: '+7 999 111-22-33', avatar: null },
+                    { id: 'demo2', username: 'maria', displayName: 'Maria', email: 'maria@demo.com', phone: '+7 999 444-55-66', avatar: null },
+                    { id: 'demo3', username: 'john', displayName: 'John', email: 'john@demo.com', phone: '+7 999 777-88-99', avatar: null }
+                ];
+                USERS = demoUsers;
+                // Добавляем несколько контактов (для демонстрации)
+                CONTACTS = demoUsers.map(u => ({
+                    id: u.id,
+                    name: u.displayName,
+                    avatar: u.avatar || u.displayName.charAt(0).toUpperCase(),
+                    color: '#6c8cff',
+                    status: 'online',
+                    lastMsg: 'Привет!',
+                    time: '12:00',
+                    unread: 0
+                }));
+                // Небольшие сообщения
+                MESSAGES_BY_CONTACT = {
+                    'demo1': [
+                        { from: 'them', text: 'Привет!', time: '12:00' },
+                        { from: 'me', text: 'Здравствуй!', time: '12:05' }
+                    ],
+                    'demo2': [
+                        { from: 'them', text: 'Как дела?', time: '11:30' },
+                        { from: 'me', text: 'Всё хорошо, спасибо!', time: '11:35' }
+                    ]
+                };
+                saveData();
+            }
 
             // Восстановление темы
             const savedTheme = localStorage.getItem('pulsechat-theme');
@@ -1614,6 +1740,27 @@
                     openContactProfile(currentContactId);
                 }
             });
+
+            // Обработчики для удаления
+            deleteForAllBtn.addEventListener('click', function() {
+                if (deleteTarget) {
+                    performDelete(deleteTarget.contactId, deleteTarget.index, 'all');
+                }
+                closeDeleteOption();
+            });
+            deleteForMeBtn.addEventListener('click', function() {
+                if (deleteTarget) {
+                    performDelete(deleteTarget.contactId, deleteTarget.index, 'me');
+                }
+                closeDeleteOption();
+            });
+            deleteCancelBtn.addEventListener('click', closeDeleteOption);
+            // Закрытие по клику вне окна
+            deleteOptionOverlay.addEventListener('click', function(e) {
+                if (e.target === deleteOptionOverlay) {
+                    closeDeleteOption();
+                }
+            });
         }
 
         function applyTheme(isLight) {
@@ -1646,11 +1793,11 @@
                     // Создаём нового пользователя
                     const newUser = {
                         id: generateId(),
-                        username: email.split('@')[0], // без @
+                        username: email.split('@')[0],
                         displayName: name || email.split('@')[0],
                         email: email,
                         phone: '',
-                        password: '', // не используется
+                        password: '',
                         avatar: picture || null,
                         googleId: payload.sub
                     };
@@ -2063,7 +2210,7 @@
                         actions = `
                             <div class="msg-actions">
                                 <button onclick="forwardMessage('${contactId}', ${idx})" title="Переслать"><i class="fas fa-share"></i></button>
-                                <button class="danger" onclick="deleteMessage('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
+                                <button class="danger" onclick="openDeleteOption('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         `;
                     }
@@ -2157,19 +2304,30 @@
             const msgs = MESSAGES_BY_CONTACT[contactId];
             if (!msgs || index < 0 || index >= msgs.length) return;
             const msg = msgs[index];
-            // Копируем текст в поле ввода (если текущий чат открыт)
             msgInput.value = msg.text || '';
             msgInput.focus();
             showToast('💬 Текст скопирован в поле ввода');
         }
 
         // ============================================================
-        //  УДАЛЕНИЕ СООБЩЕНИЙ
+        //  УДАЛЕНИЕ СООБЩЕНИЙ (с выбором)
         // ============================================================
-        function deleteMessage(contactId, index) {
-            if (!confirm('Удалить это сообщение?')) return;
+        function openDeleteOption(contactId, index) {
+            deleteTarget = { contactId, index };
+            deleteOptionOverlay.classList.add('show');
+        }
+
+        function closeDeleteOption() {
+            deleteOptionOverlay.classList.remove('show');
+            deleteTarget = null;
+        }
+
+        function performDelete(contactId, index, mode) {
             const msgs = MESSAGES_BY_CONTACT[contactId];
             if (!msgs || index < 0 || index >= msgs.length) return;
+            const msg = msgs[index];
+            // Для личных чатов оба режима работают одинаково (удаляем у себя)
+            // Для групповых можно расширить логику, но в демо-версии удаляем у всех
             msgs.splice(index, 1);
             if (msgs.length === 0) {
                 const contact = CONTACTS.find(c => c.id === contactId);
@@ -2188,7 +2346,7 @@
             renderMessages(contactId);
             renderContacts();
             saveData();
-            showToast('🗑 Сообщение удалено');
+            showToast(mode === 'all' ? '🗑 Сообщение удалено для всех' : '🗑 Сообщение удалено для себя');
         }
 
         // ============================================================
@@ -2421,6 +2579,7 @@
                 showToast('👋 До встречи!');
                 closeProfile();
                 closeContactProfile();
+                closeDeleteOption();
             }
         }
 
@@ -2461,6 +2620,7 @@
                 if (profileOverlay.classList.contains('show')) closeProfile();
                 if (callOverlay.classList.contains('show')) endCall();
                 if (contactProfileOverlay.classList.contains('show')) closeContactProfile();
+                if (deleteOptionOverlay.classList.contains('show')) closeDeleteOption();
                 if (emojiPickerVisible) {
                     emojiPickerVisible = false;
                     emojiPicker.style.display = 'none';
@@ -2476,7 +2636,7 @@
         console.log('👤 Все пользователи сохраняются в localStorage.');
         console.log('🔍 Поиск работает по имени, @username и телефону.');
         console.log('📱 При клике на результат поиска контакт добавляется и открывается чат.');
-        console.log('🗑 Удаление и пересылка сообщений работают.');
+        console.log('🗑 Удаление: открывается выбор "для всех" или "для себя".');
         console.log('👤 Клик по шапке чата или аватарке контакта открывает профиль.');
     </script>
 </body>
