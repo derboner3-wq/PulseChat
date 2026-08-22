@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NameChat — Групповой чат</title>
-    <!-- Подключаем Google Identity Services -->
+    <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
@@ -267,6 +267,7 @@
             margin-top: 0.8rem;
             min-height: 1.2rem;
         }
+
         /* Google кнопка */
         .gsi-material-button {
             display: flex;
@@ -990,16 +991,16 @@
             для разговоров, игр и встреч.
         </p>
         <div class="landing-buttons">
-            <button class="btn btn-primary" onclick="showAuth('register')">
-                <i class="fab fa-windows"></i> Скачать для Windows
+            <button class="btn btn-primary" onclick="showAuth('login')">
+                <i class="fas fa-sign-in-alt"></i> Войти
             </button>
             <button class="btn btn-secondary" onclick="showAuth('register')">
-                <i class="fas fa-globe"></i> Открыть в браузере
+                <i class="fas fa-user-plus"></i> Зарегистрироваться
             </button>
         </div>
         <div class="landing-footer">
             <i class="fas fa-shield-alt" style="margin-right:4px;"></i>
-            Безопасно · <a href="#" onclick="showAuth('register');return false;">Начать</a>
+            Безопасно · <a href="#" onclick="showAuth('login');return false;">Начать</a>
         </div>
     </div>
 
@@ -1017,12 +1018,10 @@
 
             <div id="auth-error" class="auth-error"></div>
 
-            <!-- Кнопка Google -->
+            <!-- Кнопка Google (исправленный callback) -->
             <div id="g_id_onload"
                  data-client_id="889771331457-d3d7l350nr9o92ngkvqngujn2eijknif.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-login_uri=""
+                 data-callback="handleGoogleCredentialResponse"
                  data-auto_prompt="false">
             </div>
             <div class="g_id_signin"
@@ -1201,14 +1200,12 @@
         const authSub = $('auth-sub');
         const authToggleText = $('auth-toggle-text');
         const authToggleLink = $('auth-toggle-link');
-        const authEmailField = $('auth-email-field');
         const authEmail = $('auth-email');
-        const authPasswordField = $('auth-password-field');
         const authPassword = $('auth-password');
-        const authDisplayNameField = $('auth-displayname-field');
         const authDisplayName = $('auth-displayname');
-        const authCodeField = $('auth-code-field');
+        const authDisplayNameField = $('auth-displayname-field');
         const authCode = $('auth-code');
+        const authCodeField = $('auth-code-field');
         const authSubmitBtn = $('auth-submit-btn');
         const authError = $('auth-error');
         const contactList = $('contact-list');
@@ -1247,7 +1244,6 @@
                 landingPage.classList.add('active');
                 authPage.classList.remove('active');
                 messengerPage.classList.remove('active');
-                // Настройка формы авторизации по умолчанию (логин)
                 showAuth('login');
             }
 
@@ -1268,25 +1264,16 @@
                 userIdTooltip.textContent = `ID: ${currentUser.id}`;
             }
 
-            // Инициализация Google Login
-            initGoogleLogin();
-        }
-
-        // ===== ИНИЦИАЛИЗАЦИЯ GOOGLE LOGIN =====
-        function initGoogleLogin() {
+            // Google Library Load callback
             window.onGoogleLibraryLoad = () => {
                 console.log('Google Identity Services loaded');
-                // Дополнительная настройка, если нужно
             };
-            // Обработчик ответа от Google зададим глобально
-            window.handleGoogleCredentialResponse = handleGoogleCredentialResponse;
         }
 
-        // ===== ОБРАБОТКА ОТВЕТА ОТ GOOGLE =====
+        // ============================================================
+        //  ОБРАБОТКА ОТВЕТА ОТ GOOGLE (callback)
+        // ============================================================
         function handleGoogleCredentialResponse(response) {
-            // response.credential — это JWT токен
-            console.log('Google ответ получен');
-            // Декодируем JWT (payload — вторая часть)
             try {
                 const payload = parseJwt(response.credential);
                 const email = payload.email;
@@ -1299,19 +1286,18 @@
                     // Создаём нового пользователя
                     const newUser = {
                         id: generateId(),
-                        username: email, // используем email как username
+                        username: email,
                         displayName: name || email.split('@')[0],
                         email: email,
-                        password: '', // пароль не задан, вход только через Google
+                        password: '',
                         avatar: picture || null,
                         googleId: payload.sub
                     };
                     USERS.push(newUser);
                     user = newUser;
                     saveData();
-                    showToast(`🔐 Аккаунт создан через Google`);
+                    showToast('🔐 Аккаунт создан через Google');
                 }
-                // Вход
                 currentUser = user;
                 saveData();
                 showMessenger();
@@ -1322,7 +1308,7 @@
             }
         }
 
-        // ===== ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ДЕКОДИРОВАНИЯ JWT =====
+        // ===== ДЕКОДИРОВАНИЕ JWT =====
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -1386,9 +1372,7 @@
                 authDisplayNameField.style.display = 'block';
                 authPasswordField.style.display = 'block';
                 authEmailField.style.display = 'block';
-                // Скрываем 2FA поле
                 authCodeField.style.display = 'none';
-                // Скрываем кнопку Google? оставим
             } else {
                 authTitle.textContent = 'Войти в NameChat';
                 authToggleText.textContent = 'Нет аккаунта?';
@@ -1463,7 +1447,7 @@
                 return;
             }
 
-            // 2FA заглушка (если пользователь найден)
+            // 2FA заглушка
             if (USERS.some(u => u.email === email)) {
                 authCodeField.style.display = 'block';
                 authSubmitBtn.textContent = 'Подтвердить код';
@@ -1807,8 +1791,6 @@
                 messengerPage.classList.remove('active');
                 landingPage.classList.add('active');
                 showToast('👋 До встречи!');
-                // Также сбрасываем Google сессию? Необязательно.
-                // Можно добавить google.accounts.id.disableAutoSelect();
             }
         }
 
@@ -1849,8 +1831,8 @@
         console.log('🚀 NameChat загружен!');
         console.log('🔐 2FA заглушка: код 123456');
         console.log('📌 Название: NameChat');
-        console.log('🔑 Google OAuth настроен.');
+        console.log('🔑 Google OAuth настроен (используйте callback).');
+        console.log('⚠️ Не забудьте добавить ваш домен в "Авторизованные источники JavaScript" в Google Cloud Console.');
     </script>
-
 </body>
 </html>
