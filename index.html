@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NameChat — Групповой чат</title>
-    <!-- Google Identity Services -->
+    <title>PulseChat — Групповой чат</title>
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -49,7 +47,6 @@
             background: #4f5663;
         }
 
-        /* ===== PAGE CONTAINER ===== */
         .page {
             display: none;
             width: 100%;
@@ -70,9 +67,7 @@
             }
         }
 
-        /* ============================================================
-                   LANDING PAGE
-                   ============================================================ */
+        /* ===== LANDING ===== */
         #landing-page {
             flex-direction: column;
             align-items: center;
@@ -164,9 +159,7 @@
             text-decoration: underline;
         }
 
-        /* ============================================================
-                   AUTH PAGE (Регистрация / Вход)
-                   ============================================================ */
+        /* ===== AUTH ===== */
         #auth-page {
             flex-direction: column;
             align-items: center;
@@ -267,32 +260,6 @@
             margin-top: 0.8rem;
             min-height: 1.2rem;
         }
-
-        /* Google кнопка */
-        .gsi-material-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 0.7rem;
-            border-radius: 14px;
-            background: #fff;
-            color: #3c4043;
-            font-weight: 500;
-            font-size: 0.95rem;
-            gap: 0.6rem;
-            border: 1px solid #dadce0;
-            transition: 0.2s;
-            margin-top: 0.4rem;
-        }
-        .gsi-material-button:hover {
-            background: #f8f9fa;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .gsi-material-button img {
-            width: 24px;
-            height: 24px;
-        }
         .auth-divider {
             display: flex;
             align-items: center;
@@ -308,15 +275,11 @@
             background: #2f2f3e;
         }
 
-        /* ============================================================
-                   MESSENGER PAGE
-                   ============================================================ */
+        /* ===== MESSENGER ===== */
         #messenger-page {
             flex-direction: row;
             background: #0f131c;
         }
-
-        /* --- Sidebar --- */
         .messenger-sidebar {
             width: 280px;
             min-width: 280px;
@@ -517,7 +480,6 @@
             color: #3a3f4a;
         }
 
-        /* --- Chat Area --- */
         .messenger-chat {
             flex: 1;
             display: flex;
@@ -586,7 +548,6 @@
             color: #f87171;
         }
 
-        /* --- Messages --- */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -699,7 +660,6 @@
             }
         }
 
-        /* --- Input --- */
         .chat-input {
             padding: 0.8rem 1.2rem 1.2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -793,6 +753,161 @@
             box-shadow: 0 8px 24px rgba(108, 140, 255, 0.45);
         }
 
+        /* ===== PROFILE SETTINGS OVERLAY ===== */
+        .profile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .profile-overlay.show {
+            display: flex;
+        }
+        .profile-box {
+            background: #1a1a22;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 480px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.6);
+        }
+        .profile-box .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .profile-box .profile-header .avatar-big {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+            overflow: hidden;
+            flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid #6c8cff;
+        }
+        .profile-box .profile-header .avatar-big img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-box .profile-header .avatar-big .upload-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+        .profile-box .profile-header .avatar-big:hover .upload-overlay {
+            opacity: 1;
+        }
+        .profile-box .profile-header .info h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .profile-box .profile-header .info p {
+            color: #8b95a9;
+            font-size: 0.9rem;
+        }
+        .profile-box .field {
+            margin-bottom: 1.2rem;
+        }
+        .profile-box .field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #b0b9ce;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .profile-box .field input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .profile-box .field input:focus {
+            border-color: #6c8cff;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(108, 140, 255, 0.15);
+        }
+        .profile-box .field input::placeholder {
+            color: #5a637a;
+        }
+        .profile-box .profile-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .profile-box .profile-actions button {
+            flex: 1;
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+            min-width: 100px;
+        }
+        .btn-save {
+            background: #6c8cff;
+            color: #fff;
+        }
+        .btn-save:hover {
+            background: #5a7ae0;
+        }
+        .btn-close {
+            background: rgba(255, 255, 255, 0.08);
+            color: #dbdee1;
+        }
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .profile-box .pass-msg {
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            color: #6a738a;
+        }
+        .profile-box .pass-msg.success {
+            color: #4cd9a0;
+        }
+        .profile-box .pass-msg.error {
+            color: #f87171;
+        }
+
         /* ===== CALL OVERLAY ===== */
         .call-overlay {
             display: none;
@@ -870,9 +985,26 @@
             color: #f87171;
         }
 
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
+        /* ===== TOAST ===== */
+        #toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 0.6rem 1.6rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #fff;
+            z-index: 9999;
+            display: none;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.3s;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .messenger-sidebar {
                 width: 220px;
@@ -894,6 +1026,10 @@
                 width: 34px;
                 height: 34px;
                 font-size: 0.95rem;
+            }
+            .profile-box {
+                padding: 1.5rem;
+                max-width: 95%;
             }
         }
         @media (max-width: 600px) {
@@ -973,22 +1109,23 @@
                 height: 52px;
                 font-size: 1.3rem;
             }
+            .profile-box .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    LANDING PAGE
-    ============================================================ -->
+    <!-- ===== LANDING PAGE ===== -->
     <div id="landing-page" class="page active">
-        <div class="logo">NameChat</div>
+        <div class="logo">PulseChat</div>
         <div class="logo-sub">Групповой чат</div>
         <h1>Групповой чат, который <span>объединяет</span></h1>
         <p class="subtext">
-            NameChat — это место, где можно играть, общаться с друзьями
-            или строить сообщество по всему миру. Настраивай своё пространство
-            для разговоров, игр и встреч.
+            PulseChat — это место, где можно играть, общаться с друзьями
+            или строить сообщество по всему миру.
         </p>
         <div class="landing-buttons">
             <button class="btn btn-primary" onclick="showAuth('login')">
@@ -997,6 +1134,9 @@
             <button class="btn btn-secondary" onclick="showAuth('register')">
                 <i class="fas fa-user-plus"></i> Зарегистрироваться
             </button>
+            <button class="btn btn-secondary" onclick="downloadWindows()">
+                <i class="fab fa-windows"></i> Скачать для Windows
+            </button>
         </div>
         <div class="landing-footer">
             <i class="fas fa-shield-alt" style="margin-right:4px;"></i>
@@ -1004,12 +1144,10 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    AUTH PAGE
-    ============================================================ -->
+    <!-- ===== AUTH PAGE ===== -->
     <div id="auth-page" class="page">
         <div class="auth-box">
-            <div class="auth-logo">NameChat</div>
+            <div class="auth-logo">PulseChat</div>
             <div class="auth-title" id="auth-title">Добро пожаловать</div>
             <div class="auth-sub" id="auth-sub">
                 <span id="auth-toggle-text">Нет аккаунта?</span>
@@ -1018,7 +1156,6 @@
 
             <div id="auth-error" class="auth-error"></div>
 
-            <!-- Кнопка Google (исправленный callback) -->
             <div id="g_id_onload"
                  data-client_id="889771331457-d3d7l350nr9o92ngkvqngujn2eijknif.apps.googleusercontent.com"
                  data-callback="handleGoogleCredentialResponse"
@@ -1048,7 +1185,6 @@
                 <input type="text" id="auth-displayname" placeholder="Как вас называть" />
             </div>
 
-            <!-- Поле для 2FA (показывается только при входе, если аккаунт уже есть) -->
             <div class="field" id="auth-code-field" style="display:none;">
                 <label>Код подтверждения</label>
                 <input type="text" id="auth-code" placeholder="Введите код из бота" />
@@ -1058,16 +1194,12 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    MESSENGER PAGE
-    ============================================================ -->
+    <!-- ===== MESSENGER PAGE ===== -->
     <div id="messenger-page" class="page">
-
-        <!-- Sidebar -->
         <div class="messenger-sidebar">
             <div class="sidebar-header">
-                <span class="brand">NameChat</span>
-                <div class="user-avatar" id="sidebar-avatar" title="Нажмите, чтобы скопировать ID">
+                <span class="brand">PulseChat</span>
+                <div class="user-avatar" id="sidebar-avatar" title="Профиль и настройки">
                     <span id="sidebar-avatar-letter">U</span>
                     <span class="status-dot"></span>
                     <span class="id-tooltip" id="userIdTooltip">ID: </span>
@@ -1081,11 +1213,9 @@
             </div>
             <div class="sidebar-contacts" id="contact-list">
                 <div class="section-label">— Контакты —</div>
-                <!-- контакты будут вставлены js -->
             </div>
         </div>
 
-        <!-- Chat -->
         <div class="messenger-chat">
             <div class="chat-header" id="chat-header">
                 <div class="left">
@@ -1099,6 +1229,7 @@
                     <button title="Голосовой вызов" onclick="startCall()"><i class="fas fa-phone"></i></button>
                     <button title="Видео вызов" onclick="startCall()"><i class="fas fa-video"></i></button>
                     <button title="Закрепить" onclick="showToast('Закреплено!')"><i class="fas fa-thumbtack"></i></button>
+                    <button title="Скачать Windows" onclick="downloadWindows()"><i class="fab fa-windows"></i></button>
                     <button title="Выйти" class="danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
@@ -1119,9 +1250,42 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    CALL OVERLAY
-    ============================================================ -->
+    <!-- ===== PROFILE OVERLAY ===== -->
+    <div class="profile-overlay" id="profile-overlay">
+        <div class="profile-box">
+            <div class="profile-header">
+                <div class="avatar-big" id="profile-avatar-trigger">
+                    <span id="profile-avatar-letter">U</span>
+                    <img id="profile-avatar-img" style="display:none;" alt="" />
+                    <div class="upload-overlay"><i class="fas fa-camera"></i></div>
+                </div>
+                <div class="info">
+                    <h2 id="profile-name-display">Имя</h2>
+                    <p id="profile-email-display">email@example.com</p>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Отображаемое имя</label>
+                <input type="text" id="profile-name-input" placeholder="Введите имя" />
+            </div>
+
+            <div class="field">
+                <label>Смена пароля</label>
+                <input type="password" id="profile-old-pass" placeholder="Старый пароль" />
+                <input type="password" id="profile-new-pass" placeholder="Новый пароль (мин. 4 символа)" style="margin-top:0.5rem;" />
+                <div class="pass-msg" id="profile-pass-msg"></div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn-save" onclick="saveProfile()"><i class="fas fa-save"></i> Сохранить</button>
+                <button class="btn-close" onclick="closeProfile()"><i class="fas fa-times"></i> Закрыть</button>
+                <button class="btn-danger" onclick="deleteAccount()"><i class="fas fa-trash"></i> Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CALL OVERLAY ===== -->
     <div class="call-overlay" id="call-overlay">
         <div class="call-avatar" id="call-avatar" style="background:#6c8cff;">U</div>
         <div class="call-name" id="call-name">Контакт</div>
@@ -1134,19 +1298,20 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    TOAST
-    ============================================================ -->
-    <div id="toast" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);padding:0.6rem 1.6rem;border-radius:40px;font-size:0.9rem;color:#fff;z-index:9999;display:none;pointer-events:none;border:1px solid rgba(255,255,255,0.06);transition:0.3s;"></div>
+    <!-- ===== TOAST ===== -->
+    <div id="toast"></div>
+
+    <!-- ===== HIDDEN FILE INPUT ===== -->
+    <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" />
 
     <!-- ============================================================
     JAVASCRIPT
     ============================================================ -->
     <script>
         // ============================================================
-        //  ХРАНЕНИЕ ДАННЫХ (localStorage)
+        //  ХРАНЕНИЕ
         // ============================================================
-        const STORAGE_KEY = 'namechatData';
+        const STORAGE_KEY = 'pulsechatData';
 
         function loadData() {
             try {
@@ -1175,7 +1340,7 @@
         }
 
         // ============================================================
-        //  ГЛОБАЛЬНЫЕ ДАННЫЕ
+        //  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
         // ============================================================
         let USERS = [];
         let CONTACTS = [];
@@ -1188,7 +1353,7 @@
         let callInterval = null;
         let callSeconds = 0;
         let isMuted = false;
-        let authMode = 'login'; // 'login' или 'register'
+        let authMode = 'login';
         let pendingLoginUser = null;
 
         // ===== DOM REFS =====
@@ -1224,6 +1389,19 @@
         const callTimer = $('call-timer');
         const callMuteBtn = $('call-mute-btn');
         const toast = $('toast');
+
+        // Profile refs
+        const profileOverlay = $('profile-overlay');
+        const profileAvatarTrigger = $('profile-avatar-trigger');
+        const profileAvatarLetter = $('profile-avatar-letter');
+        const profileAvatarImg = $('profile-avatar-img');
+        const profileNameDisplay = $('profile-name-display');
+        const profileEmailDisplay = $('profile-email-display');
+        const profileNameInput = $('profile-name-input');
+        const profileOldPass = $('profile-old-pass');
+        const profileNewPass = $('profile-new-pass');
+        const profilePassMsg = $('profile-pass-msg');
+        const avatarFileInput = $('avatar-file-input');
 
         // ============================================================
         //  ИНИЦИАЛИЗАЦИЯ
@@ -1262,28 +1440,30 @@
 
             if (currentUser) {
                 userIdTooltip.textContent = `ID: ${currentUser.id}`;
+                updateProfileUI();
             }
 
-            // Google Library Load callback
             window.onGoogleLibraryLoad = () => {
                 console.log('Google Identity Services loaded');
             };
+
+            // Avatar upload
+            avatarFileInput.addEventListener('change', handleAvatarUpload);
+            profileAvatarTrigger.addEventListener('click', () => avatarFileInput.click());
         }
 
         // ============================================================
-        //  ОБРАБОТКА ОТВЕТА ОТ GOOGLE (callback)
+        //  GOOGLE AUTH
         // ============================================================
-        function handleGoogleCredentialResponse(response) {
+        window.handleGoogleCredentialResponse = function(response) {
             try {
                 const payload = parseJwt(response.credential);
                 const email = payload.email;
                 const name = payload.name;
                 const picture = payload.picture;
 
-                // Ищем пользователя с таким email
                 let user = USERS.find(u => u.email === email);
                 if (!user) {
-                    // Создаём нового пользователя
                     const newUser = {
                         id: generateId(),
                         username: email,
@@ -1305,10 +1485,10 @@
             } catch (e) {
                 console.error('Ошибка обработки Google токена', e);
                 authError.textContent = '⚠️ Ошибка входа через Google';
+                showToast('⚠️ Ошибка входа через Google', 'error');
             }
-        }
+        };
 
-        // ===== ДЕКОДИРОВАНИЕ JWT =====
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -1333,10 +1513,10 @@
             } else {
                 showNoContactMessage();
             }
+            updateProfileUI();
             saveData();
         }
 
-        // ===== Показать сообщение "Выберите контакт" =====
         function showNoContactMessage() {
             chatMessages.innerHTML = `
                 <div class="system-msg">
@@ -1351,7 +1531,7 @@
         }
 
         // ============================================================
-        //  АВТОРИЗАЦИЯ (переключение логин/регистрация)
+        //  АВТОРИЗАЦИЯ
         // ============================================================
         function showAuth(mode) {
             authMode = mode || 'login';
@@ -1374,7 +1554,7 @@
                 authEmailField.style.display = 'block';
                 authCodeField.style.display = 'none';
             } else {
-                authTitle.textContent = 'Войти в NameChat';
+                authTitle.textContent = 'Войти в PulseChat';
                 authToggleText.textContent = 'Нет аккаунта?';
                 authToggleLink.textContent = 'Зарегистрироваться';
                 authSubmitBtn.textContent = 'Войти';
@@ -1447,7 +1627,6 @@
                 return;
             }
 
-            // 2FA заглушка
             if (USERS.some(u => u.email === email)) {
                 authCodeField.style.display = 'block';
                 authSubmitBtn.textContent = 'Подтвердить код';
@@ -1480,12 +1659,118 @@
 
         const authSubmitBtnHandler = authSubmitBtn.onclick;
 
-        // Enter в полях авторизации
         [authEmail, authPassword, authDisplayName, authCode].forEach(field => {
             field.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') authSubmitBtn.click();
             });
         });
+
+        // ============================================================
+        //  ПРОФИЛЬ
+        // ============================================================
+        function updateProfileUI() {
+            if (!currentUser) return;
+            const avatar = currentUser.avatar || (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+            if (currentUser.avatar && currentUser.avatar.startsWith('data:image')) {
+                profileAvatarImg.src = currentUser.avatar;
+                profileAvatarImg.style.display = 'block';
+                profileAvatarLetter.style.display = 'none';
+            } else {
+                profileAvatarImg.style.display = 'none';
+                profileAvatarLetter.style.display = 'flex';
+                profileAvatarLetter.textContent = avatar;
+            }
+            profileNameDisplay.textContent = currentUser.displayName || currentUser.username;
+            profileEmailDisplay.textContent = currentUser.email;
+            profileNameInput.value = currentUser.displayName || currentUser.username;
+            profileOldPass.value = '';
+            profileNewPass.value = '';
+            profilePassMsg.textContent = '';
+            profilePassMsg.className = 'pass-msg';
+        }
+
+        function openProfile() {
+            if (!currentUser) return;
+            updateProfileUI();
+            profileOverlay.classList.add('show');
+        }
+
+        function closeProfile() {
+            profileOverlay.classList.remove('show');
+        }
+
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64 = event.target.result;
+                currentUser.avatar = base64;
+                saveData();
+                updateProfileUI();
+                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0)
+                .toUpperCase();
+                showToast('✅ Аватар обновлён');
+            };
+            reader.readAsDataURL(file);
+            avatarFileInput.value = '';
+        }
+
+        function saveProfile() {
+            const newName = profileNameInput.value.trim();
+            if (!newName) {
+                showToast('⚠️ Имя не может быть пустым');
+                return;
+            }
+            const oldPass = profileOldPass.value;
+            const newPass = profileNewPass.value;
+
+            // Обновляем имя
+            currentUser.displayName = newName;
+            sidebarAvatarLetter.textContent = newName.charAt(0).toUpperCase();
+
+            // Смена пароля (если заполнены поля)
+            if (oldPass && newPass) {
+                if (newPass.length < 4) {
+                    profilePassMsg.textContent = '⚠️ Пароль должен быть не менее 4 символов';
+                    profilePassMsg.className = 'pass-msg error';
+                    return;
+                }
+                if (currentUser.password && currentUser.password !== oldPass) {
+                    profilePassMsg.textContent = '⚠️ Неверный старый пароль';
+                    profilePassMsg.className = 'pass-msg error';
+                    return;
+                }
+                currentUser.password = newPass;
+                profilePassMsg.textContent = '✅ Пароль изменён';
+                profilePassMsg.className = 'pass-msg success';
+            } else {
+                profilePassMsg.textContent = '';
+                profilePassMsg.className = 'pass-msg';
+            }
+
+            saveData();
+            updateProfileUI();
+            showToast('✅ Настройки сохранены');
+        }
+
+        function deleteAccount() {
+            if (!confirm('Вы уверены, что хотите удалить аккаунт? Это действие необратимо.')) return;
+            if (!confirm('Все данные будут потеряны. Продолжить?')) return;
+            const index = USERS.findIndex(u => u.id === currentUser.id);
+            if (index !== -1) {
+                USERS.splice(index, 1);
+                currentUser = null;
+                saveData();
+                closeProfile();
+                messengerPage.classList.remove('active');
+                landingPage.classList.add('active');
+                showToast('👋 Аккаунт удалён');
+            }
+        }
+
+        // Открытие профиля по клику на аватар
+        document.getElementById('sidebar-avatar').addEventListener('click', openProfile);
 
         // ============================================================
         //  КОНТАКТЫ
@@ -1785,13 +2070,25 @@
         //  ВЫХОД
         // ============================================================
         function logout() {
-            if (confirm('Выйти из NameChat?')) {
+            if (confirm('Выйти из PulseChat?')) {
                 currentUser = null;
                 saveData();
                 messengerPage.classList.remove('active');
                 landingPage.classList.add('active');
                 showToast('👋 До встречи!');
+                closeProfile();
             }
+        }
+
+        // ============================================================
+        //  СКАЧАТЬ WINDOWS
+        // ============================================================
+        function downloadWindows() {
+            showToast('📦 Загрузка установщика PulseChat для Windows...');
+            // В реальном проекте здесь будет ссылка на скачивание
+            setTimeout(() => {
+                showToast('✅ Установщик загружен! (демо)');
+            }, 1500);
         }
 
         // ============================================================
@@ -1799,28 +2096,27 @@
         // ============================================================
         let toastTimeout = null;
 
-        function showToast(msg) {
+        function showToast(msg, type = '') {
             toast.textContent = msg;
             toast.style.display = 'block';
+            if (type === 'error') {
+                toast.style.borderColor = '#f87171';
+            } else {
+                toast.style.borderColor = 'rgba(255,255,255,0.06)';
+            }
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.style.display = 'none';
-            }, 2200);
+            }, 3000);
         }
 
         // ============================================================
         //  КЛАВИАТУРНЫЕ СОЧЕТАНИЯ
         // ============================================================
         document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                if (messengerPage.classList.contains('active')) {
-                    sendMessage();
-                }
-            }
             if (e.key === 'Escape') {
-                if (callOverlay.classList.contains('show')) {
-                    endCall();
-                }
+                if (profileOverlay.classList.contains('show')) closeProfile();
+                if (callOverlay.classList.contains('show')) endCall();
             }
         });
 
@@ -1828,11 +2124,10 @@
         //  ЗАПУСК
         // ============================================================
         init();
-        console.log('🚀 NameChat загружен!');
+        console.log('🚀 PulseChat загружен!');
         console.log('🔐 2FA заглушка: код 123456');
-        console.log('📌 Название: NameChat');
-        console.log('🔑 Google OAuth настроен (используйте callback).');
-        console.log('⚠️ Не забудьте добавить ваш домен в "Авторизованные источники JavaScript" в Google Cloud Console.');
+        console.log('👤 Профиль и настройки доступны по клику на аватар.');
+        console.log('📦 Кнопка "Скачать для Windows" добавлена.');
     </script>
 </body>
 </html>
