@@ -652,7 +652,7 @@
             font-size: 0.75rem;
             color: var(--text-muted);
         }
-        .search-result-item .add-btn {
+        .search-result-item .action-btn {
             padding: 0.2rem 0.8rem;
             border-radius: 12px;
             background: #6c8cff;
@@ -660,11 +660,13 @@
             font-size: 0.75rem;
             font-weight: 600;
             transition: 0.2s;
+            border: none;
+            cursor: pointer;
         }
-        .search-result-item .add-btn:hover {
+        .search-result-item .action-btn:hover {
             background: #5a7ae0;
         }
-        .search-result-item .add-btn.added {
+        .search-result-item .action-btn.added {
             background: var(--bg-input);
             color: var(--text-muted);
             cursor: default;
@@ -751,8 +753,8 @@
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: stretch;
         }
         .chat-messages .msg {
             max-width: 72%;
@@ -814,6 +816,7 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             padding: 1rem 0;
+            width: 100%;
         }
         .chat-messages .system-msg i {
             font-size: 2.8rem;
@@ -1717,6 +1720,7 @@
                 authThemeToggle.checked = true;
             }
 
+            // Если есть сохранённый пользователь, загружаем его
             if (stored.currentUser) {
                 currentUser = USERS.find(u => u.id === stored.currentUser) || null;
             }
@@ -1724,10 +1728,11 @@
             if (currentUser) {
                 showMessenger();
             } else {
+                // Показываем лендинг, а не страницу входа
                 landingPage.classList.add('active');
                 authPage.classList.remove('active');
                 messengerPage.classList.remove('active');
-                showAuth('login');
+                // Не вызываем showAuth, чтобы не переключать на authPage
             }
 
             msgInput.addEventListener('input', function() {
@@ -1739,7 +1744,7 @@
             renderContacts();
             if (currentContactId) {
                 selectContact(currentContactId);
-            } else {
+            } else if (currentUser) {
                 showNoContactMessage();
             }
 
@@ -2016,13 +2021,13 @@
         });
 
         // ============================================================
-        //  ПОИСК ПОЛЬЗОВАТЕЛЕЙ
+        //  ПОИСК ПОЛЬЗОВАТЕЛЕЙ (обновлён)
         // ============================================================
         function searchUsers(query) {
             const q = query.trim().toLowerCase();
             const resultsDiv = searchResults;
 
-            if (!q) {
+            if (!q || !currentUser) {
                 resultsDiv.innerHTML = '';
                 resultsDiv.style.display = 'none';
                 return;
@@ -2048,6 +2053,8 @@
                 const isContact = CONTACTS.some(c => c.id === u.id);
                 const avatar = u.avatar || u.displayName.charAt(0).toUpperCase();
                 const avatarStyle = u.avatar ? '' : `background:linear-gradient(135deg,#6c8cff,#8b5cf6);`;
+                const actionLabel = isContact ? 'Написать' : 'Добавить';
+                const actionClass = isContact ? 'added' : '';
                 html += `
                     <div class="search-result-item">
                         <div class="avatar" style="${avatarStyle}">
@@ -2057,8 +2064,8 @@
                             <div class="name">${u.displayName}</div>
                             <div class="username">${u.username}${u.phone ? ' · 📱' : ''}</div>
                         </div>
-                        <button class="add-btn ${isContact ? 'added' : ''}" onclick="${isContact ? '' : `addContact('${u.id}')`}" ${isContact ? 'disabled' : ''}>
-                            ${isContact ? '✓ В контактах' : '➕ Добавить'}
+                        <button class="action-btn ${actionClass}" onclick="handleSearchResultClick('${u.id}')">
+                            ${actionLabel}
                         </button>
                     </div>
                 `;
@@ -2066,8 +2073,42 @@
             resultsDiv.innerHTML = html;
         }
 
+        // Обработка клика по результату поиска
+        function handleSearchResultClick(userId) {
+            const user = USERS.find(u => u.id === userId);
+            if (!user) return;
+
+            // Проверяем, есть ли уже в контактах
+            let contact = CONTACTS.find(c => c.id === userId);
+            if (!contact) {
+                // Добавляем в контакты
+                const newContact = {
+                    id: user.id,
+                    name: user.displayName,
+                    avatar: user.avatar || user.displayName.charAt(0).toUpperCase(),
+                    color: '#6c8cff',
+                    status: user.status || 'online',
+                    lastMsg: '',
+                    time: '',
+                    unread: 0
+                };
+                CONTACTS.push(newContact);
+                saveData();
+                renderContacts();
+                contact = newContact;
+                showToast(`✅ ${user.displayName} добавлен в контакты`);
+            }
+
+            // Открываем чат с этим контактом
+            selectContact(contact.id);
+            // Очищаем поиск
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+        }
+
         // ============================================================
-        //  ДОБАВЛЕНИЕ КОНТАКТА
+        //  ДОБАВЛЕНИЕ КОНТАКТА (старый метод, оставляем для совместимости)
         // ============================================================
         function addContact(userId) {
             const user = USERS.find(u => u.id === userId);
@@ -2097,7 +2138,7 @@
         }
 
         // ============================================================
-        //  ПРОФИЛЬ
+        //  ПРОФИЛЬ (без изменений)
         // ============================================================
         function updateProfileUI() {
             if (!currentUser) return;
@@ -2311,7 +2352,6 @@
                         `;
                     } else {
                         content = m.text || '';
-                        // Простая поддержка emoji
                         content = content.replace(/:\)/g, '😊').replace(/:\(/g, '😢').replace(/:D/g, '😄').replace(/<3/g, '❤️');
                     }
                     html += `
@@ -2364,7 +2404,7 @@
             renderContacts();
             saveData();
 
-            // Эмуляция ответа (для демонстрации)
+            // Эмуляция ответа
             if (Math.random() > 0.5) {
                 setTimeout(() => {
                     const replies = ['😊 Отлично!', 'Понял!', 'Спасибо!', 'Договорились', 'Круто!', 'Да, давай', 'Ок!'];
@@ -2515,19 +2555,16 @@
             localVideo.style.display = 'none';
             remoteVideo.style.display = 'none';
 
-            // Запрашиваем доступ к микрофону и камере
             navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                 .then(stream => {
                     localStream = stream;
                     localVideo.srcObject = stream;
                     localVideo.style.display = 'block';
-                    // Включаем камеру по умолчанию
                     isCameraOn = true;
                     callCamBtn.innerHTML = '<i class="fas fa-video"></i>';
                     callCamBtn.classList.add('active');
                 })
                 .catch(() => {
-                    // Если камера недоступна, пробуем только аудио
                     navigator.mediaDevices.getUserMedia({ audio: true })
                         .then(stream => {
                             localStream = stream;
@@ -2680,6 +2717,7 @@
         console.log('🌓 Тема переключается до входа.');
         console.log('📦 Кнопка "Скачать для Windows" добавлена.');
         console.log('🎥 Видеозвонки с камерой (демо).');
+        console.log('✅ Поиск: при клике на найденного пользователя он добавляется в контакты и открывается чат.');
     </script>
 </body>
 </html>
