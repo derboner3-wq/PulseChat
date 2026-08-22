@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>PulseChat — Групповой чат</title>
+    <title>PulseChat</title>
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
@@ -126,8 +126,9 @@
         .sidebar-header .brand { font-size:1.2rem; font-weight:700; background:linear-gradient(135deg,#6c8cff,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
         .sidebar-header .user-avatar {
             width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#6c8cff,#8b5cf6);
-            display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; color:#fff; cursor:pointer; position:relative;
+            display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.9rem; color:#fff; cursor:pointer; position:relative; overflow:hidden;
         }
+        .sidebar-header .user-avatar img { width:100%; height:100%; object-fit:cover; }
         .sidebar-header .user-avatar:hover { transform:scale(1.05); box-shadow:0 0 0 2px #6c8cff; }
         .sidebar-header .user-avatar .status-dot { position:absolute; bottom:0; right:0; width:10px; height:10px; border-radius:50%; background:#34d399; border:2px solid var(--bg-secondary); }
 
@@ -577,6 +578,7 @@
         const chatContactName = $('chat-contact-name');
         const chatContactStatus = $('chat-contact-status');
         const chatAvatar = $('chat-avatar');
+        const sidebarAvatar = $('sidebar-avatar');
         const sidebarAvatarLetter = $('sidebar-avatar-letter');
         const voiceBtn = $('voice-btn');
         const callOverlay = $('call-overlay');
@@ -607,6 +609,21 @@
         const profileNewPass = $('profile-new-pass');
         const profilePassMsg = $('profile-pass-msg');
         const authThemeToggle = $('auth-theme-toggle');
+
+        // ============================================================
+        //  HELPER: рендер аватара
+        // ============================================================
+        function renderAvatar(avatar, name, container) {
+            if (!container) return;
+            if (avatar && (avatar.startsWith('http') || avatar.startsWith('data:image'))) {
+                container.innerHTML = `<img src="${avatar}" alt="avatar" />`;
+                container.style.background = 'transparent';
+            } else {
+                const letter = (name || '?').charAt(0).toUpperCase();
+                container.innerHTML = letter;
+                container.style.background = 'linear-gradient(135deg, #6c8cff, #8b5cf6)';
+            }
+        }
 
         // ============================================================
         //  INIT
@@ -742,7 +759,7 @@
         function showMessenger() {
             authWrapper.style.display = 'none';
             messengerPage.classList.add('active');
-            sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+            renderAvatar(currentUser.avatar, currentUser.displayName || currentUser.username, sidebarAvatar);
             renderContacts();
             if (currentContactId) selectContact(currentContactId);
             else showNoContactMessage();
@@ -753,7 +770,7 @@
         function showNoContactMessage() {
             chatMessages.innerHTML = `<div class="system-msg"><i class="fas fa-comment-alt"></i><div style="font-size:1rem;color:var(--text-muted);">Выберите контакт</div></div>`;
             chatContactName.textContent = 'Выберите контакт';
-            chatAvatar.textContent = '?';
+            chatAvatar.innerHTML = '?';
             chatAvatar.style.background = '#6c8cff';
             chatContactStatus.classList.remove('show');
         }
@@ -763,7 +780,7 @@
         // ============================================================
         function showAuth(mode) {
             authMode = mode || 'login';
-            authCode.style.display = 'none';
+            $('auth-code-field').style.display = 'none';
             authCode.value = '';
             pendingLoginUser = null;
             authError.textContent = '';
@@ -916,11 +933,15 @@
             let html = '';
             found.forEach(u => {
                 const isContact = CONTACTS.some(c => c.id === u.id);
-                const avatar = u.avatar || u.displayName.charAt(0).toUpperCase();
-                const style = u.avatar ? '' : `background:linear-gradient(135deg,#6c8cff,#8b5cf6);`;
+                const avatarHtml = u.avatar && (u.avatar.startsWith('http') || u.avatar.startsWith('data:image')) ?
+                    `<img src="${u.avatar}" />` :
+                    u.displayName.charAt(0).toUpperCase();
+                const style = (u.avatar && (u.avatar.startsWith('http') || u.avatar.startsWith('data:image'))) ?
+                    'background:transparent;' :
+                    'background:linear-gradient(135deg,#6c8cff,#8b5cf6);';
                 html += `
                     <div class="search-result-item">
-                        <div class="avatar" style="${style}">${u.avatar ? `<img src="${u.avatar}" />` : avatar}</div>
+                        <div class="avatar" style="${style}">${avatarHtml}</div>
                         <div class="info">
                             <div class="name">${u.displayName}</div>
                             <div class="username">${u.username}${u.phone ? ' · 📱' : ''}</div>
@@ -944,7 +965,7 @@
             CONTACTS.push({
                 id: user.id,
                 name: user.displayName,
-                avatar: user.avatar || user.displayName.charAt(0).toUpperCase(),
+                avatar: user.avatar || null,
                 color: '#6c8cff',
                 status: user.status || 'online',
                 lastMsg: '',
@@ -964,15 +985,15 @@
         // ============================================================
         function updateProfileUI() {
             if (!currentUser) return;
-            const avatar = currentUser.avatar || (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
-            if (currentUser.avatar && currentUser.avatar.startsWith('data:image')) {
-                profileAvatarImg.src = currentUser.avatar;
+            const avatar = currentUser.avatar || null;
+            if (avatar && (avatar.startsWith('http') || avatar.startsWith('data:image'))) {
+                profileAvatarImg.src = avatar;
                 profileAvatarImg.style.display = 'block';
                 profileAvatarLetter.style.display = 'none';
             } else {
                 profileAvatarImg.style.display = 'none';
                 profileAvatarLetter.style.display = 'flex';
-                profileAvatarLetter.textContent = avatar;
+                profileAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
             }
             profileNameDisplay.textContent = currentUser.displayName || currentUser.username;
             profileUsernameDisplay.textContent = currentUser.username;
@@ -1003,7 +1024,7 @@
                 currentUser.avatar = event.target.result;
                 saveData();
                 updateProfileUI();
-                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+                renderAvatar(currentUser.avatar, currentUser.displayName || currentUser.username, sidebarAvatar);
                 showToast('✅ Аватар обновлён');
             };
             reader.readAsDataURL(file);
@@ -1034,7 +1055,6 @@
             currentUser.username = newUsername;
             currentUser.displayName = newName;
             currentUser.phone = newPhone;
-            sidebarAvatarLetter.textContent = newName.charAt(0).toUpperCase();
 
             const oldPass = profileOldPass.value;
             const newPass = profileNewPass.value;
@@ -1059,6 +1079,7 @@
 
             saveData();
             updateProfileUI();
+            renderAvatar(currentUser.avatar, currentUser.displayName || currentUser.username, sidebarAvatar);
             renderContacts();
             showToast('✅ Настройки сохранены');
         }
@@ -1091,11 +1112,16 @@
                     const statusDot = user && user.status === 'online' ? '#34d399' : '#4e5668';
                     const active = c.id === currentContactId ? 'active' : '';
                     const unread = c.unread > 0 ? `<span class="unread">${c.unread}</span>` : '';
-                    const avatarContent = c.avatar && c.avatar.startsWith('data:image') ? `<img src="${c.avatar}" />` : c.avatar || '?';
+                    const avatarHtml = c.avatar && (c.avatar.startsWith('http') || c.avatar.startsWith('data:image')) ?
+                        `<img src="${c.avatar}" />` :
+                        (c.avatar || c.name.charAt(0).toUpperCase());
+                    const style = (c.avatar && (c.avatar.startsWith('http') || c.avatar.startsWith('data:image'))) ?
+                        'background:transparent;' :
+                        `background:${c.color || '#6c8cff'};`;
                     html += `
                         <div class="contact-item ${active}" data-id="${c.id}" onclick="selectContact('${c.id}')">
-                            <div class="avatar" style="background:${c.color || '#6c8cff'};">
-                                ${avatarContent}
+                            <div class="avatar" style="${style}">
+                                ${avatarHtml}
                                 <span class="status-dot-sm" style="background:${statusDot};"></span>
                             </div>
                             <div class="info">
@@ -1118,8 +1144,13 @@
             currentContactId = id;
             const user = USERS.find(u => u.id === id);
             chatContactName.textContent = contact.name;
-            const avatarContent = contact.avatar && contact.avatar.startsWith('data:image') ? `<img src="${contact.avatar}" />` : contact.avatar || '?';
-            chatAvatar.innerHTML = avatarContent;
+            const avatarHtml = contact.avatar && (contact.avatar.startsWith('http') || contact.avatar.startsWith('data:image')) ?
+                `<img src="${contact.avatar}" />` :
+                (contact.avatar || contact.name.charAt(0).toUpperCase());
+            const style = (contact.avatar && (contact.avatar.startsWith('http') || contact.avatar.startsWith('data:image'))) ?
+                'background:transparent;' :
+                `background:${contact.color || '#6c8cff'};`;
+            chatAvatar.innerHTML = avatarHtml;
             chatAvatar.style.background = contact.color || '#6c8cff';
             chatContactStatus.textContent = user && user.status === 'online' ? '● В сети' : '● Не в сети';
             chatContactStatus.style.color = user && user.status === 'online' ? '#34d399' : '#4e5668';
@@ -1317,8 +1348,13 @@
             const contact = CONTACTS.find(c => c.id === currentContactId);
             if (!contact) { showToast('⚠️ Выберите контакт'); return; }
             callContactId = contact.id;
-            const avatarContent = contact.avatar && contact.avatar.startsWith('data:image') ? `<img src="${contact.avatar}" />` : contact.avatar || '?';
-            callAvatar.innerHTML = avatarContent;
+            const avatarHtml = contact.avatar && (contact.avatar.startsWith('http') || contact.avatar.startsWith('data:image')) ?
+                `<img src="${contact.avatar}" />` :
+                (contact.avatar || contact.name.charAt(0).toUpperCase());
+            const style = (contact.avatar && (contact.avatar.startsWith('http') || contact.avatar.startsWith('data:image'))) ?
+                'background:transparent;' :
+                `background:${contact.color || '#6c8cff'};`;
+            callAvatar.innerHTML = avatarHtml;
             callAvatar.style.background = contact.color || '#6c8cff';
             callName.textContent = contact.name;
             callStatus.textContent = 'Соединение...';
@@ -1507,6 +1543,7 @@
         console.log('🔍 Поиск по @username, имени, телефону');
         console.log('📎 Вложения, ответ, пересылка, удаление');
         console.log('🎥 Видеозвонки с камерой');
+        console.log('✅ Аватары корректно отображаются (картинка или буква)');
     </script>
 </body>
 </html>
