@@ -102,7 +102,7 @@
             }
         }
 
-        /* ===== LANDING (только Google вход) ===== */
+        /* ===== LANDING (только Google) ===== */
         #landing-page {
             flex-direction: column;
             align-items: center;
@@ -196,28 +196,6 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 1rem;
-        }
-        .btn-google {
-            background: #fff;
-            color: #1a1a2e;
-            padding: 0.85rem 2.4rem;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            transition: 0.2s;
-            border: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        }
-        .btn-google:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-        }
-        .btn-google img {
-            width: 24px;
-            height: 24px;
         }
         .landing-footer {
             position: absolute;
@@ -384,6 +362,7 @@
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
+            background: var(--bg-elevated);
         }
         .contact-item .avatar img {
             width: 100%;
@@ -474,6 +453,7 @@
             color: #fff;
             flex-shrink: 0;
             overflow: hidden;
+            background: var(--bg-elevated);
         }
         .search-result-item .avatar img {
             width: 100%;
@@ -539,6 +519,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            cursor: pointer;
         }
         .chat-header .left .avatar {
             width: 40px;
@@ -550,6 +531,7 @@
             font-weight: 600;
             color: #fff;
             overflow: hidden;
+            background: var(--bg-elevated);
         }
         .chat-header .left .avatar img {
             width: 100%;
@@ -603,60 +585,89 @@
             justify-content: flex-start;
             align-items: stretch;
         }
-        .chat-messages .msg {
+        .chat-messages .msg-wrapper {
+            display: flex;
+            flex-direction: column;
             max-width: 72%;
+            position: relative;
+        }
+        .chat-messages .msg-wrapper.out {
+            align-self: flex-end;
+        }
+        .chat-messages .msg-wrapper.in {
+            align-self: flex-start;
+        }
+        .chat-messages .msg-wrapper .msg {
             padding: 0.6rem 1rem;
             border-radius: 16px;
             font-size: 0.95rem;
             line-height: 1.5;
             animation: msgIn 0.25s ease;
-            position: relative;
             word-wrap: break-word;
+            position: relative;
         }
-        @keyframes msgIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        .chat-messages .msg.out {
-            align-self: flex-end;
+        .chat-messages .msg-wrapper.out .msg {
             background: linear-gradient(135deg, #6c8cff, #8b5cf6);
             color: #fff;
             border-bottom-right-radius: 4px;
         }
-        .chat-messages .msg.in {
-            align-self: flex-start;
+        .chat-messages .msg-wrapper.in .msg {
             background: var(--bg-card);
             color: var(--text-primary);
             border-bottom-left-radius: 4px;
             border: 1px solid var(--border);
         }
-        .chat-messages .msg .time {
+        .chat-messages .msg-wrapper .msg .time {
             font-size: 0.6rem;
             opacity: 0.5;
             margin-top: 0.2rem;
             display: block;
             text-align: right;
         }
-        .chat-messages .msg .voice-msg {
+        .chat-messages .msg-wrapper .msg .voice-msg {
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
-        .chat-messages .msg .voice-msg audio {
+        .chat-messages .msg-wrapper .msg .voice-msg audio {
             max-width: 200px;
             height: 36px;
             border-radius: 20px;
             background: transparent;
         }
-        .chat-messages .msg .voice-msg .voice-label {
+        .chat-messages .msg-wrapper .msg .voice-msg .voice-label {
             font-size: 0.8rem;
             opacity: 0.7;
+        }
+        .chat-messages .msg-wrapper .msg-actions {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.2rem;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: 0.15s;
+        }
+        .chat-messages .msg-wrapper:hover .msg-actions {
+            opacity: 1;
+        }
+        .chat-messages .msg-wrapper .msg-actions button {
+            padding: 0.1rem 0.4rem;
+            border-radius: 12px;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .chat-messages .msg-wrapper .msg-actions button:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .chat-messages .msg-wrapper .msg-actions button.danger:hover {
+            background: rgba(239,68,68,0.2);
+            color: #f87171;
         }
         .chat-messages .system-msg {
             text-align: center;
@@ -696,16 +707,8 @@
             animation-delay: 0.4s;
         }
         @keyframes dotPulse {
-            0%,
-            80%,
-            100% {
-                opacity: 0.2;
-                transform: scale(0.8);
-            }
-            40% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
+            0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1.2); }
         }
 
         .chat-input {
@@ -770,13 +773,8 @@
             animation: pulseRed 1s infinite;
         }
         @keyframes pulseRed {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.15);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
         .chat-input .btn-send {
             padding: 0.7rem 1.4rem;
@@ -798,7 +796,7 @@
             box-shadow: 0 8px 24px rgba(108, 140, 255, 0.45);
         }
 
-        /* ===== PROFILE OVERLAY ===== */
+        /* ===== PROFILE OVERLAY (для текущего пользователя) ===== */
         .profile-overlay {
             display: none;
             position: fixed;
@@ -959,6 +957,78 @@
             color: #f87171;
         }
 
+        /* ===== CONTACT PROFILE OVERLAY (просмотр контакта) ===== */
+        .contact-profile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .contact-profile-overlay.show {
+            display: flex;
+        }
+        .contact-profile-box {
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .contact-profile-box .avatar-big {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #fff;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            border: 3px solid #6c8cff;
+        }
+        .contact-profile-box .avatar-big img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .contact-profile-box h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .contact-profile-box .username {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .contact-profile-box .phone {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact-profile-box .close-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: 0.15s;
+        }
+        .contact-profile-box .close-btn:hover {
+            background: var(--bg-hover);
+        }
+
         /* ===== CALL OVERLAY ===== */
         .call-overlay {
             display: none;
@@ -988,6 +1058,7 @@
             margin-bottom: 1.2rem;
             box-shadow: 0 16px 48px rgba(108, 140, 255, 0.3);
             overflow: hidden;
+            background: var(--bg-elevated);
         }
         .call-overlay .call-avatar img {
             width: 100%;
@@ -1073,7 +1144,7 @@
             #landing-page .logo {
                 font-size: 2.8rem;
             }
-            .chat-messages .msg {
+            .chat-messages .msg-wrapper {
                 max-width: 85%;
             }
             .chat-header .actions button {
@@ -1151,9 +1222,9 @@
             #landing-page h1 {
                 font-size: 1.8rem;
             }
-            .landing-buttons .btn-google {
-                padding: 0.6rem 1.4rem;
-                font-size: 0.85rem;
+            .landing-buttons {
+                flex-direction: column;
+                align-items: center;
             }
             .call-overlay .call-avatar {
                 width: 72px;
@@ -1253,7 +1324,7 @@
 
         <div class="messenger-chat">
             <div class="chat-header" id="chat-header">
-                <div class="left">
+                <div class="left" id="chat-header-left">
                     <div class="avatar" id="chat-avatar" style="background:#6c8cff;">?</div>
                     <div class="info">
                         <div class="name" id="chat-contact-name">Выберите контакт</div>
@@ -1302,7 +1373,7 @@
         </div>
     </div>
 
-    <!-- ===== PROFILE OVERLAY ===== -->
+    <!-- ===== PROFILE OVERLAY (для текущего пользователя) ===== -->
     <div class="profile-overlay" id="profile-overlay">
         <div class="profile-box">
             <div class="profile-header">
@@ -1342,6 +1413,17 @@
                 <button class="btn-close" onclick="closeProfile()"><i class="fas fa-times"></i> Закрыть</button>
                 <button class="btn-danger" onclick="deleteAccount()"><i class="fas fa-trash"></i> Удалить аккаунт</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== CONTACT PROFILE OVERLAY (просмотр контакта) ===== -->
+    <div class="contact-profile-overlay" id="contact-profile-overlay">
+        <div class="contact-profile-box">
+            <div class="avatar-big" id="contact-profile-avatar">?</div>
+            <h2 id="contact-profile-name">Имя</h2>
+            <div class="username" id="contact-profile-username">@username</div>
+            <div class="phone" id="contact-profile-phone">📱 +7 999 123-45-67</div>
+            <button class="close-btn" onclick="closeContactProfile()">Закрыть</button>
         </div>
     </div>
 
@@ -1462,6 +1544,13 @@
         const avatarFileInput = $('avatar-file-input');
         const landingThemeToggle = $('landing-theme-toggle');
 
+        // Contact profile
+        const contactProfileOverlay = $('contact-profile-overlay');
+        const contactProfileAvatar = $('contact-profile-avatar');
+        const contactProfileName = $('contact-profile-name');
+        const contactProfileUsername = $('contact-profile-username');
+        const contactProfilePhone = $('contact-profile-phone');
+
         // ============================================================
         //  ИНИЦИАЛИЗАЦИЯ
         // ============================================================
@@ -1517,6 +1606,13 @@
 
             landingThemeToggle.addEventListener('change', function() {
                 applyTheme(this.checked);
+            });
+
+            // Клик по шапке чата для открытия профиля контакта
+            document.getElementById('chat-header-left').addEventListener('click', function() {
+                if (currentContactId) {
+                    openContactProfile(currentContactId);
+                }
             });
         }
 
@@ -1589,11 +1685,7 @@
             landingPage.classList.remove('active');
             messengerPage.classList.add('active');
             // Обновляем аватар
-            if (currentUser.avatar) {
-                sidebarAvatarLetter.innerHTML = `<img src="${currentUser.avatar}" alt="" />`;
-            } else {
-                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
-            }
+            updateSidebarAvatar();
             userIdTooltip.textContent = `ID: ${currentUser.id}`;
             renderContacts();
             if (currentContactId) {
@@ -1603,6 +1695,14 @@
             }
             updateProfileUI();
             saveData();
+        }
+
+        function updateSidebarAvatar() {
+            if (currentUser.avatar) {
+                sidebarAvatarLetter.innerHTML = `<img src="${currentUser.avatar}" alt="" />`;
+            } else {
+                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+            }
         }
 
         function showNoContactMessage() {
@@ -1711,7 +1811,7 @@
         }
 
         // ============================================================
-        //  ПРОФИЛЬ
+        //  ПРОФИЛЬ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
         // ============================================================
         function updateProfileUI() {
             if (!currentUser) return;
@@ -1755,12 +1855,14 @@
                 currentUser.avatar = base64;
                 saveData();
                 updateProfileUI();
-                // Обновляем аватар в сайдбаре
-                if (currentUser.avatar) {
-                    sidebarAvatarLetter.innerHTML = `<img src="${currentUser.avatar}" alt="" />`;
-                } else {
-                    sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
-                }
+                updateSidebarAvatar();
+                // Обновить аватарки контактов (для этого пользователя)
+                CONTACTS.forEach(c => {
+                    if (c.id === currentUser.id) {
+                        c.avatar = base64;
+                    }
+                });
+                renderContacts();
                 showToast('✅ Аватар обновлён');
             };
             reader.readAsDataURL(file);
@@ -1787,12 +1889,7 @@
             currentUser.username = newUsername;
             currentUser.displayName = newName;
             currentUser.phone = newPhone;
-            // Обновляем аватар в сайдбаре
-            if (currentUser.avatar) {
-                sidebarAvatarLetter.innerHTML = `<img src="${currentUser.avatar}" alt="" />`;
-            } else {
-                sidebarAvatarLetter.textContent = newName.charAt(0).toUpperCase();
-            }
+            updateSidebarAvatar();
 
             // Обновляем имя в контактах (где он есть)
             CONTACTS.forEach(c => {
@@ -1816,6 +1913,9 @@
             const index = USERS.findIndex(u => u.id === currentUser.id);
             if (index !== -1) {
                 USERS.splice(index, 1);
+                // Удаляем контакты и сообщения этого пользователя
+                CONTACTS = CONTACTS.filter(c => c.id !== currentUser.id);
+                delete MESSAGES_BY_CONTACT[currentUser.id];
                 currentUser = null;
                 saveData();
                 closeProfile();
@@ -1826,6 +1926,32 @@
         }
 
         document.getElementById('sidebar-avatar').addEventListener('click', openProfile);
+
+        // ============================================================
+        //  ПРОФИЛЬ КОНТАКТА (просмотр)
+        // ============================================================
+        function openContactProfile(contactId) {
+            const contact = CONTACTS.find(c => c.id === contactId);
+            if (!contact) return;
+            const user = USERS.find(u => u.id === contactId);
+            if (!user) return;
+
+            // Заполняем данные
+            if (user.avatar) {
+                contactProfileAvatar.innerHTML = `<img src="${user.avatar}" alt="" />`;
+            } else {
+                contactProfileAvatar.textContent = user.displayName.charAt(0).toUpperCase();
+                contactProfileAvatar.style.background = 'linear-gradient(135deg, #6c8cff, #8b5cf6)';
+            }
+            contactProfileName.textContent = user.displayName;
+            contactProfileUsername.textContent = user.username;
+            contactProfilePhone.textContent = user.phone ? `📱 ${user.phone}` : '📱 Телефон не указан';
+            contactProfileOverlay.classList.add('show');
+        }
+
+        function closeContactProfile() {
+            contactProfileOverlay.classList.remove('show');
+        }
 
         // ============================================================
         //  КОНТАКТЫ
@@ -1846,9 +1972,14 @@
                     const statusDot = user && user.status === 'online' ? '#34d399' : '#4e5668';
                     const active = c.id === currentContactId ? 'active' : '';
                     const unreadBadge = c.unread > 0 ? `<span class="unread">${c.unread}</span>` : '';
-                    let avatarHtml = c.avatar && typeof c.avatar === 'string' && c.avatar.startsWith('data:image') ?
-                        `<img src="${c.avatar}" alt="" />` :
-                        (c.avatar || '?');
+                    let avatarHtml = '';
+                    if (c.avatar && typeof c.avatar === 'string' && c.avatar.startsWith('data:image')) {
+                        avatarHtml = `<img src="${c.avatar}" alt="" />`;
+                    } else if (c.avatar && typeof c.avatar === 'string' && c.avatar.startsWith('http')) {
+                        avatarHtml = `<img src="${c.avatar}" alt="" />`;
+                    } else {
+                        avatarHtml = (c.avatar || '?');
+                    }
                     html += `
                         <div class="contact-item ${active}" data-id="${c.id}" onclick="selectContact('${c.id}')">
                             <div class="avatar" style="background:${c.color || '#6c8cff'};">${avatarHtml}</div>
@@ -1878,9 +2009,14 @@
             currentContactId = id;
             const user = USERS.find(u => u.id === id);
             chatContactName.textContent = contact.name;
-            let avatarHtml = contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('data:image') ?
-                `<img src="${contact.avatar}" alt="" />` :
-                (contact.avatar || '?');
+            let avatarHtml = '';
+            if (contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('data:image')) {
+                avatarHtml = `<img src="${contact.avatar}" alt="" />`;
+            } else if (contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('http')) {
+                avatarHtml = `<img src="${contact.avatar}" alt="" />`;
+            } else {
+                avatarHtml = (contact.avatar || '?');
+            }
             chatAvatar.innerHTML = avatarHtml;
             chatAvatar.style.background = contact.color || '#6c8cff';
             chatContactStatus.textContent = user && user.status === 'online' ? '● В сети' : '● Не в сети';
@@ -1904,7 +2040,7 @@
             if (msgs.length === 0) {
                 html += `<div class="system-msg" style="color:var(--text-muted);">Нет сообщений. Напишите что-нибудь!</div>`;
             } else {
-                msgs.forEach(m => {
+                msgs.forEach((m, idx) => {
                     const cls = m.from === 'me' ? 'out' : 'in';
                     const isVoice = m.isVoice || false;
                     let content = '';
@@ -1921,10 +2057,23 @@
                         content = m.text || '';
                         content = content.replace(/:\)/g, '😊').replace(/:\(/g, '😢').replace(/:D/g, '😄').replace(/<3/g, '❤️');
                     }
+                    // Кнопки действий для своих сообщений
+                    let actions = '';
+                    if (m.from === 'me') {
+                        actions = `
+                            <div class="msg-actions">
+                                <button onclick="forwardMessage('${contactId}', ${idx})" title="Переслать"><i class="fas fa-share"></i></button>
+                                <button class="danger" onclick="deleteMessage('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        `;
+                    }
                     html += `
-                        <div class="msg ${cls}">
-                            ${content}
-                            <span class="time">${m.time || ''}</span>
+                        <div class="msg-wrapper ${cls}">
+                            <div class="msg">
+                                ${content}
+                                <span class="time">${m.time || ''}</span>
+                            </div>
+                            ${actions}
                         </div>
                     `;
                 });
@@ -1999,6 +2148,47 @@
                 e.preventDefault();
                 sendMessage();
             }
+        }
+
+        // ============================================================
+        //  ПЕРЕСЫЛКА СООБЩЕНИЙ
+        // ============================================================
+        function forwardMessage(contactId, index) {
+            const msgs = MESSAGES_BY_CONTACT[contactId];
+            if (!msgs || index < 0 || index >= msgs.length) return;
+            const msg = msgs[index];
+            // Копируем текст в поле ввода (если текущий чат открыт)
+            msgInput.value = msg.text || '';
+            msgInput.focus();
+            showToast('💬 Текст скопирован в поле ввода');
+        }
+
+        // ============================================================
+        //  УДАЛЕНИЕ СООБЩЕНИЙ
+        // ============================================================
+        function deleteMessage(contactId, index) {
+            if (!confirm('Удалить это сообщение?')) return;
+            const msgs = MESSAGES_BY_CONTACT[contactId];
+            if (!msgs || index < 0 || index >= msgs.length) return;
+            msgs.splice(index, 1);
+            if (msgs.length === 0) {
+                const contact = CONTACTS.find(c => c.id === contactId);
+                if (contact) {
+                    contact.lastMsg = '';
+                    contact.time = '';
+                }
+            } else {
+                const last = msgs[msgs.length - 1];
+                const contact = CONTACTS.find(c => c.id === contactId);
+                if (contact) {
+                    contact.lastMsg = last.text || '';
+                    contact.time = last.time || '';
+                }
+            }
+            renderMessages(contactId);
+            renderContacts();
+            saveData();
+            showToast('🗑 Сообщение удалено');
         }
 
         // ============================================================
@@ -2092,7 +2282,7 @@
         }
 
         // ============================================================
-        //  ЗВОНКИ С ВЕБ-КАМЕРОЙ (упрощённо)
+        //  ЗВОНКИ (демо)
         // ============================================================
         let callContactId = null;
 
@@ -2103,9 +2293,14 @@
                 return;
             }
             callContactId = contact.id;
-            const avatarHtml = contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('data:image') ?
-                `<img src="${contact.avatar}" alt="" />` :
-                (contact.avatar || '?');
+            let avatarHtml = '';
+            if (contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('data:image')) {
+                avatarHtml = `<img src="${contact.avatar}" alt="" />`;
+            } else if (contact.avatar && typeof contact.avatar === 'string' && contact.avatar.startsWith('http')) {
+                avatarHtml = `<img src="${contact.avatar}" alt="" />`;
+            } else {
+                avatarHtml = (contact.avatar || '?');
+            }
             callAvatar.innerHTML = avatarHtml;
             callAvatar.style.background = contact.color || '#6c8cff';
             callName.textContent = contact.name;
@@ -2225,6 +2420,7 @@
                 landingPage.classList.add('active');
                 showToast('👋 До встречи!');
                 closeProfile();
+                closeContactProfile();
             }
         }
 
@@ -2264,6 +2460,7 @@
             if (e.key === 'Escape') {
                 if (profileOverlay.classList.contains('show')) closeProfile();
                 if (callOverlay.classList.contains('show')) endCall();
+                if (contactProfileOverlay.classList.contains('show')) closeContactProfile();
                 if (emojiPickerVisible) {
                     emojiPickerVisible = false;
                     emojiPicker.style.display = 'none';
@@ -2279,6 +2476,8 @@
         console.log('👤 Все пользователи сохраняются в localStorage.');
         console.log('🔍 Поиск работает по имени, @username и телефону.');
         console.log('📱 При клике на результат поиска контакт добавляется и открывается чат.');
+        console.log('🗑 Удаление и пересылка сообщений работают.');
+        console.log('👤 Клик по шапке чата или аватарке контакта открывает профиль.');
     </script>
 </body>
 </html>
