@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PulseChat — Групповой чат</title>
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -41,6 +41,7 @@
             --border: #d1d5db;
             --shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
         }
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -82,6 +83,7 @@
             background: var(--text-secondary);
         }
 
+        /* ===== PAGE CONTAINER ===== */
         .page {
             display: none;
             width: 100%;
@@ -590,8 +592,8 @@
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
-            justify-content: flex-start;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
         }
         .chat-messages .msg {
             max-width: 72%;
@@ -633,24 +635,6 @@
             display: block;
             text-align: right;
         }
-        .chat-messages .msg .file-attachment {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--bg-input);
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 4px;
-            border: 1px solid var(--border);
-        }
-        .chat-messages .msg .file-attachment i {
-            font-size: 1.2rem;
-            color: var(--accent);
-        }
-        .chat-messages .msg .file-attachment:hover {
-            background: var(--bg-hover);
-        }
         .chat-messages .msg .voice-msg {
             display: flex;
             align-items: center;
@@ -671,7 +655,6 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             padding: 1rem 0;
-            width: 100%;
         }
         .chat-messages .system-msg i {
             font-size: 2.8rem;
@@ -804,39 +787,6 @@
         .chat-input .btn-send:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(108, 140, 255, 0.45);
-        }
-
-        /* ===== EMOJI PICKER ===== */
-        .emoji-picker {
-            display: none;
-            position: absolute;
-            bottom: 70px;
-            left: 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 0.8rem;
-            max-width: 280px;
-            max-height: 200px;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-            z-index: 100;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-        .emoji-picker.show {
-            display: grid;
-        }
-        .emoji-picker span {
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 4px;
-            text-align: center;
-            border-radius: 6px;
-            transition: 0.15s;
-        }
-        .emoji-picker span:hover {
-            background: var(--bg-hover);
         }
 
         /* ===== PROFILE OVERLAY ===== */
@@ -1110,24 +1060,6 @@
             background: rgba(239, 68, 68, 0.3);
             color: #f87171;
         }
-        .call-overlay .call-video-container {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .call-overlay .call-video-container video {
-            width: 300px;
-            max-width: 45vw;
-            border-radius: 12px;
-            background: #111;
-            border: 2px solid var(--border);
-            display: none;
-        }
-        .call-overlay .call-video-container video.active {
-            display: block;
-        }
 
         /* ===== TOAST ===== */
         #toast {
@@ -1174,9 +1106,6 @@
             .profile-box {
                 padding: 1.5rem;
                 max-width: 95%;
-            }
-            .call-overlay .call-video-container video {
-                width: 200px;
             }
         }
         @media (max-width: 600px) {
@@ -1260,14 +1189,6 @@
                 flex-direction: column;
                 text-align: center;
             }
-            .call-overlay .call-video-container video {
-                width: 140px;
-                max-width: 40vw;
-            }
-            .emoji-picker {
-                max-width: 200px;
-                font-size: 1.2rem;
-            }
         }
     </style>
 </head>
@@ -1327,6 +1248,10 @@
 
             <div class="auth-divider">или</div>
 
+            <div class="field" id="auth-email-field">
+                <label>Email</label>
+                <input type="email" id="auth-email" placeholder="example@mail.com" />
+            </div>
             <div class="field" id="auth-username-field">
                 <label>Username (с @)</label>
                 <input type="text" id="auth-username" placeholder="@username" />
@@ -1382,7 +1307,7 @@
                 </div>
                 <div class="actions">
                     <button title="Голосовой вызов" onclick="startCall()"><i class="fas fa-phone"></i></button>
-                    <button title="Видео вызов" onclick="startVideoCall()"><i class="fas fa-video"></i></button>
+                    <button title="Видео вызов" onclick="startCall()"><i class="fas fa-video"></i></button>
                     <button title="Закрепить" onclick="showToast('Закреплено!')"><i class="fas fa-thumbtack"></i></button>
                     <button title="Скачать Windows" onclick="downloadWindows()"><i class="fab fa-windows"></i></button>
                     <button title="Выйти" class="danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
@@ -1393,18 +1318,10 @@
 
             <div class="chat-input">
                 <div class="input-wrap">
-                    <button class="btn-icon" title="Вложение" onclick="document.getElementById('file-input').click()"><i class="fas fa-paperclip"></i></button>
-                    <button class="btn-icon" title="Смайлы" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
-                    <div class="emoji-picker" id="emoji-picker">
-                        <span>😊</span><span>😂</span><span>❤️</span><span>🔥</span><span>👍</span><span>👀</span>
-                        <span>✨</span><span>🎉</span><span>💪</span><span>🤔</span><span>😎</span><span>🥳</span>
-                        <span>💀</span><span>🌈</span><span>🍕</span><span>☕</span><span>🎮</span><span>📚</span>
-                        <span>💻</span><span>🎵</span><span>🎶</span><span>💡</span><span>⭐</span><span>🌙</span>
-                        <span>☀️</span><span>🌸</span><span>🌺</span><span>🌻</span><span>🌹</span><span>🌷</span>
-                    </div>
-                    <input type="file" id="file-input" style="display:none" multiple onchange="handleFileUpload(event)" />
+                    <button class="btn-icon" title="Вложение" onclick="showToast('📎 Вложения скоро появятся')"><i class="fas fa-paperclip"></i></button>
                     <textarea id="msg-input" rows="1" placeholder="Напишите сообщение..." onkeydown="handleKey(event)"></textarea>
                     <button class="btn-icon" id="voice-btn" title="Голосовое сообщение" onclick="toggleVoiceRecording()"><i class="fas fa-microphone"></i></button>
+                    <button class="btn-icon" title="Смайлы" onclick="showToast('😊 Смайлы скоро появятся')"><i class="fas fa-smile"></i></button>
                 </div>
                 <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Отправить</button>
             </div>
@@ -1465,24 +1382,22 @@
         <div class="call-name" id="call-name">Контакт</div>
         <div class="call-status" id="call-status">Соединение...</div>
         <div class="call-timer" id="call-timer">00:00</div>
-        <div class="call-video-container">
-            <video id="local-video" autoplay muted></video>
-            <video id="remote-video" autoplay></video>
-        </div>
         <div class="call-actions">
             <button title="Микрофон" class="mute-call" id="call-mute-btn" onclick="toggleMute()"><i class="fas fa-microphone"></i></button>
-            <button title="Камера" id="call-camera-btn" onclick="toggleCamera()"><i class="fas fa-video"></i></button>
-            <button title="Демонстрация экрана" onclick="startScreenShare()"><i class="fas fa-desktop"></i></button>
             <button title="Завершить" class="end-call" onclick="endCall()"><i class="fas fa-phone-slash"></i></button>
+            <button title="Громкая связь" onclick="showToast('🔊 Громкая связь включена')"><i class="fas fa-volume-up"></i></button>
         </div>
     </div>
 
     <!-- ===== TOAST ===== -->
     <div id="toast"></div>
 
-    <!-- ===== HIDDEN FILE INPUT FOR AVATAR ===== -->
+    <!-- ===== HIDDEN FILE INPUT ===== -->
     <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" />
 
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
     <script>
         // ============================================================
         //  ХРАНЕНИЕ
@@ -1529,8 +1444,6 @@
         let callInterval = null;
         let callSeconds = 0;
         let isMuted = false;
-        let isCameraOn = false;
-        let localStream = null;
         let authMode = 'login';
         let pendingLoginUser = null;
 
@@ -1543,6 +1456,7 @@
         const authSub = $('auth-sub');
         const authToggleText = $('auth-toggle-text');
         const authToggleLink = $('auth-toggle-link');
+        const authEmail = $('auth-email');
         const authUsername = $('auth-username');
         const authDisplayName = $('auth-displayname');
         const authDisplayNameField = $('auth-displayname-field');
@@ -1566,11 +1480,7 @@
         const callStatus = $('call-status');
         const callTimer = $('call-timer');
         const callMuteBtn = $('call-mute-btn');
-        const callCameraBtn = $('call-camera-btn');
-        const localVideo = $('local-video');
-        const remoteVideo = $('remote-video');
         const toast = $('toast');
-        const emojiPicker = $('emoji-picker');
 
         // Profile refs
         const profileOverlay = $('profile-overlay');
@@ -1596,6 +1506,7 @@
             CONTACTS = stored.contacts || [];
             MESSAGES_BY_CONTACT = stored.messages || {};
 
+            // Восстановление темы
             const savedTheme = localStorage.getItem('pulsechat-theme');
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -1639,13 +1550,6 @@
 
             avatarFileInput.addEventListener('change', handleAvatarUpload);
             profileAvatarTrigger.addEventListener('click', () => avatarFileInput.click());
-
-            // Закрытие эмодзи-пикера при клике вне его
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.input-wrap') && !e.target.closest('.emoji-picker')) {
-                    emojiPicker.classList.remove('show');
-                }
-            });
         }
 
         // ============================================================
@@ -1657,22 +1561,15 @@
                 const email = payload.email;
                 const name = payload.name;
                 const picture = payload.picture;
-                // Для Google создаём username из email
-                let username = email.split('@')[0];
-                // Проверяем уникальность
-                let counter = 1;
-                let baseUsername = username;
-                while (USERS.find(u => u.username === username)) {
-                    username = baseUsername + counter;
-                    counter++;
-                }
 
-                let user = USERS.find(u => u.username === username);
+                let user = USERS.find(u => u.email === email);
                 if (!user) {
+                    // Для Google создаём username без @, но потом пользователь сможет изменить
                     const newUser = {
                         id: generateId(),
-                        username: username,
-                        displayName: name || username,
+                        username: email.split('@')[0],
+                        displayName: name || email.split('@')[0],
+                        email: email,
                         password: '',
                         avatar: picture || null,
                         googleId: payload.sub
@@ -1755,6 +1652,7 @@
                 authSubmitBtn.textContent = 'Зарегистрироваться';
                 authDisplayNameField.style.display = 'block';
                 authPasswordField.style.display = 'block';
+                authEmailField.style.display = 'block';
                 authUsernameField.style.display = 'block';
                 authCodeField.style.display = 'none';
             } else {
@@ -1764,6 +1662,7 @@
                 authSubmitBtn.textContent = 'Войти';
                 authDisplayNameField.style.display = 'none';
                 authPasswordField.style.display = 'block';
+                authEmailField.style.display = 'block';
                 authUsernameField.style.display = 'block';
                 authCodeField.style.display = 'none';
             }
@@ -1781,17 +1680,22 @@
         let originalSubmitHandler = null;
 
         authSubmitBtn.addEventListener('click', function() {
+            const email = authEmail.value.trim();
             const username = authUsername.value.trim();
             const password = authPassword.value.trim();
 
             if (authMode === 'register') {
                 const displayName = authDisplayName.value.trim();
-                if (!username || !password || !displayName) {
+                if (!email || !username || !password || !displayName) {
                     authError.textContent = '⚠️ Заполните все поля';
                     return;
                 }
                 if (password.length < 4) {
                     authError.textContent = '⚠️ Пароль должен быть не менее 4 символов';
+                    return;
+                }
+                if (!email.includes('@')) {
+                    authError.textContent = '⚠️ Введите корректный email';
                     return;
                 }
                 if (!username.startsWith('@')) {
@@ -1802,11 +1706,16 @@
                     authError.textContent = '⚠️ Такой username уже занят';
                     return;
                 }
+                if (USERS.find(u => u.email === email)) {
+                    authError.textContent = '⚠️ Пользователь с таким email уже существует';
+                    return;
+                }
 
                 const newUser = {
                     id: generateId(),
                     username: username,
                     displayName: displayName,
+                    email: email,
                     password: password,
                     avatar: null,
                     googleId: null
@@ -1820,17 +1729,17 @@
             }
 
             // ВХОД
-            if (!username || !password) {
-                authError.textContent = '⚠️ Введите username и пароль';
+            if (!email || !password) {
+                authError.textContent = '⚠️ Введите email и пароль';
                 return;
             }
-            const user = USERS.find(u => u.username === username && u.password === password);
+            const user = USERS.find(u => u.email === email && u.password === password);
             if (!user) {
-                authError.textContent = '⚠️ Неверный username или пароль';
+                authError.textContent = '⚠️ Неверный email или пароль';
                 return;
             }
 
-            if (USERS.some(u => u.username === username)) {
+            if (USERS.some(u => u.email === email)) {
                 authCodeField.style.display = 'block';
                 authSubmitBtn.textContent = 'Подтвердить код';
                 pendingLoginUser = user;
@@ -1862,7 +1771,7 @@
 
         const authSubmitBtnHandler = authSubmitBtn.onclick;
 
-        [authUsername, authDisplayName, authPassword, authCode].forEach(field => {
+        [authEmail, authUsername, authDisplayName, authPassword, authCode].forEach(field => {
             field.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') authSubmitBtn.click();
             });
@@ -1933,6 +1842,7 @@
                 profilePassMsg.className = 'pass-msg error';
                 return;
             }
+            // Проверяем уникальность username (кроме текущего пользователя)
             const existingUser = USERS.find(u => u.username === newUsername && u.id !== currentUser.id);
             if (existingUser) {
                 profilePassMsg.textContent = '⚠️ Такой username уже занят';
@@ -1940,10 +1850,12 @@
                 return;
             }
 
+            // Обновляем данные
             currentUser.username = newUsername;
             currentUser.displayName = newName;
             sidebarAvatarLetter.textContent = newName.charAt(0).toUpperCase();
 
+            // Смена пароля (если заполнены поля)
             const oldPass = profileOldPass.value;
             const newPass = profileNewPass.value;
             if (oldPass && newPass) {
@@ -1985,6 +1897,7 @@
             }
         }
 
+        // ===== ТЕМА =====
         function toggleTheme() {
             const isDark = !themeToggle.checked;
             if (isDark) {
@@ -1996,76 +1909,8 @@
             }
         }
 
+        // Открытие профиля
         document.getElementById('sidebar-avatar').addEventListener('click', openProfile);
-
-        // ============================================================
-        //  ЭМОДЗИ
-        // ============================================================
-        function toggleEmojiPicker() {
-            emojiPicker.classList.toggle('show');
-        }
-
-        document.querySelectorAll('.emoji-picker span').forEach(el => {
-            el.addEventListener('click', function() {
-                const emoji = this.textContent;
-                const cursorPos = msgInput.selectionStart;
-                const text = msgInput.value;
-                msgInput.value = text.substring(0, cursorPos) + emoji + text.substring(cursorPos);
-                msgInput.focus();
-                msgInput.selectionStart = msgInput.selectionEnd = cursorPos + emoji.length;
-                emojiPicker.classList.remove('show');
-            });
-        });
-
-        // ============================================================
-        //  ФАЙЛЫ
-        // ============================================================
-        function handleFileUpload(e) {
-            const files = e.target.files;
-            if (!files.length) return;
-            for (const file of files) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const dataUrl = event.target.result;
-                    const fileName = file.name;
-                    const fileSize = (file.size / 1024).toFixed(1) + ' KB';
-                    const fileIcon = file.type.startsWith('image/') ? 'fa-image' :
-                        file.type.startsWith('video/') ? 'fa-video' :
-                        file.type.startsWith('audio/') ? 'fa-music' : 'fa-file';
-
-                    const now = new Date();
-                    const time = now.getHours().toString().padStart(2, '0') + ':' +
-                        now.getMinutes().toString().padStart(2, '0');
-
-                    if (!MESSAGES_BY_CONTACT[currentContactId]) {
-                        MESSAGES_BY_CONTACT[currentContactId] = [];
-                    }
-                    MESSAGES_BY_CONTACT[currentContactId].push({
-                        from: 'me',
-                        text: `📎 ${fileName} (${fileSize})`,
-                        time: time,
-                        file: {
-                            name: fileName,
-                            size: fileSize,
-                            data: dataUrl,
-                            type: file.type,
-                            icon: fileIcon
-                        }
-                    });
-                    const contact = CONTACTS.find(c => c.id === currentContactId);
-                    if (contact) {
-                        contact.lastMsg = `📎 ${fileName}`;
-                        contact.time = time;
-                    }
-                    renderMessages(currentContactId);
-                    renderContacts();
-                    saveData();
-                };
-                reader.readAsDataURL(file);
-            }
-            e.target.value = '';
-            showToast(`📎 ${files.length} файл(ов) отправлено`);
-        }
 
         // ============================================================
         //  КОНТАКТЫ
@@ -2150,18 +1995,9 @@
             } else {
                 msgs.forEach(m => {
                     const cls = m.from === 'me' ? 'out' : 'in';
+                    const isVoice = m.isVoice || false;
                     let content = '';
-                    if (m.file) {
-                        const isImage = m.file.type && m.file.type.startsWith('image/');
-                        const fileHtml = isImage ?
-                            `<img src="${m.file.data}" style="max-width:100%;max-height:200px;border-radius:8px;margin-top:4px;cursor:pointer;" onclick="window.open('${m.file.data}','_blank')" />` :
-                            `<div class="file-attachment" onclick="window.open('${m.file.data}','_blank')">
-                                <i class="fas ${m.file.icon}"></i>
-                                <span>${m.file.name}</span>
-                                <span style="font-size:0.7rem;color:var(--text-muted);">${m.file.size}</span>
-                            </div>`;
-                        content = m.text + fileHtml;
-                    } else if (m.isVoice) {
+                    if (isVoice) {
                         content = `
                             <div class="voice-msg">
                                 <span class="voice-label">🎤 Голосовое</span>
@@ -2319,12 +2155,8 @@
             callTimer.textContent = '00:00';
             callSeconds = 0;
             isMuted = false;
-            isCameraOn = false;
             callMuteBtn.innerHTML = '<i class="fas fa-microphone"></i>';
             callMuteBtn.classList.remove('active');
-            callCameraBtn.innerHTML = '<i class="fas fa-video"></i>';
-            localVideo.classList.remove('active');
-            remoteVideo.classList.remove('active');
             callOverlay.classList.add('show');
 
             setTimeout(() => {
@@ -2340,62 +2172,10 @@
             }, 1500);
         }
 
-        function startVideoCall() {
-            startCall();
-            setTimeout(() => {
-                toggleCamera();
-            }, 500);
-        }
-
-        async function toggleCamera() {
-            try {
-                if (localStream) {
-                    localStream.getTracks().forEach(t => t.stop());
-                    localStream = null;
-                    localVideo.classList.remove('active');
-                    localVideo.srcObject = null;
-                    isCameraOn = false;
-                    callCameraBtn.innerHTML = '<i class="fas fa-video"></i>';
-                    showToast('📷 Камера выключена');
-                    return;
-                }
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                localStream = stream;
-                localVideo.srcObject = stream;
-                localVideo.classList.add('active');
-                isCameraOn = true;
-                callCameraBtn.innerHTML = '<i class="fas fa-video-slash"></i>';
-                showToast('📷 Камера включена');
-            } catch (err) {
-                showToast('⚠️ Нет доступа к камере');
-                console.error(err);
-            }
-        }
-
-        async function startScreenShare() {
-            try {
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                localVideo.srcObject = stream;
-                localVideo.classList.add('active');
-                showToast('🖥️ Демонстрация экрана началась');
-                stream.getVideoTracks()[0].onended = () => {
-                    localVideo.classList.remove('active');
-                    showToast('🖥️ Демонстрация экрана завершена');
-                };
-            } catch (err) {
-                showToast('⚠️ Нет доступа к экрану');
-                console.error(err);
-            }
-        }
-
         function endCall() {
             if (callInterval) {
                 clearInterval(callInterval);
                 callInterval = null;
-            }
-            if (localStream) {
-                localStream.getTracks().forEach(t => t.stop());
-                localStream = null;
             }
             callOverlay.classList.remove('show');
             showToast('📞 Звонок завершён');
@@ -2416,8 +2196,6 @@
                 saveData();
             }
             callContactId = null;
-            localVideo.classList.remove('active');
-            remoteVideo.classList.remove('active');
         }
 
         function toggleMute() {
@@ -2478,7 +2256,6 @@
             if (e.key === 'Escape') {
                 if (profileOverlay.classList.contains('show')) closeProfile();
                 if (callOverlay.classList.contains('show')) endCall();
-                if (emojiPicker.classList.contains('show')) emojiPicker.classList.remove('show');
             }
         });
 
@@ -2491,9 +2268,6 @@
         console.log('👤 @username обязателен при регистрации.');
         console.log('🌓 Тема сохранена в localStorage.');
         console.log('📦 Кнопка "Скачать для Windows" добавлена.');
-        console.log('😊 Эмодзи-пикер доступен.');
-        console.log('📎 Вложения поддерживаются (изображения и файлы).');
-        console.log('🎥 Видеозвонки с камерой и демонстрацией экрана (заглушки).');
     </script>
 </body>
 </html>
