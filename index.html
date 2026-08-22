@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>PulseChat</title>
+    <title>PulseChat — Групповой чат</title>
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
@@ -329,6 +329,7 @@
             </div>
             <div id="auth-error" class="auth-error"></div>
 
+            <!-- Google Login (исправленный callback) -->
             <div id="g_id_onload"
                  data-client_id="889771331457-d3d7l350nr9o92ngkvqngujn2eijknif.apps.googleusercontent.com"
                  data-callback="handleGoogleCredentialResponse"
@@ -710,7 +711,7 @@
         function toggleTheme() { applyTheme(authThemeToggle.checked); }
 
         // ============================================================
-        //  GOOGLE AUTH
+        //  GOOGLE AUTH (исправленный callback)
         // ============================================================
         window.handleGoogleCredentialResponse = function(response) {
             try {
@@ -1543,7 +1544,7 @@
         console.log('🔍 Поиск по @username, имени, телефону');
         console.log('📎 Вложения, ответ, пересылка, удаление');
         console.log('🎥 Видеозвонки с камерой');
-        console.log('✅ Аватары корректно отображаются (картинка или буква)');
+        console.log('✅ Google OAuth исправлен');
     </script>
 </body>
 </html>
