@@ -751,63 +751,124 @@
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
-            justify-content: center;
-            align-items: center;
+            align-items: stretch;
         }
-        .chat-messages .msg {
+        .chat-messages .msg-wrapper {
+            display: flex;
+            flex-direction: column;
             max-width: 72%;
+            position: relative;
+        }
+        .chat-messages .msg-wrapper.out {
+            align-self: flex-end;
+        }
+        .chat-messages .msg-wrapper.in {
+            align-self: flex-start;
+        }
+        .chat-messages .msg-wrapper .msg {
             padding: 0.6rem 1rem;
             border-radius: 16px;
             font-size: 0.95rem;
             line-height: 1.5;
             animation: msgIn 0.25s ease;
-            position: relative;
             word-wrap: break-word;
+            position: relative;
         }
-        @keyframes msgIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        .chat-messages .msg.out {
-            align-self: flex-end;
+        .chat-messages .msg-wrapper.out .msg {
             background: linear-gradient(135deg, #6c8cff, #8b5cf6);
             color: #fff;
             border-bottom-right-radius: 4px;
         }
-        .chat-messages .msg.in {
-            align-self: flex-start;
+        .chat-messages .msg-wrapper.in .msg {
             background: var(--bg-card);
             color: var(--text-primary);
             border-bottom-left-radius: 4px;
             border: 1px solid var(--border);
         }
-        .chat-messages .msg .time {
+        .chat-messages .msg-wrapper .msg .time {
             font-size: 0.6rem;
             opacity: 0.5;
             margin-top: 0.2rem;
             display: block;
             text-align: right;
         }
-        .chat-messages .msg .voice-msg {
+        .chat-messages .msg-wrapper .msg .voice-msg {
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
-        .chat-messages .msg .voice-msg audio {
+        .chat-messages .msg-wrapper .msg .voice-msg audio {
             max-width: 200px;
             height: 36px;
             border-radius: 20px;
             background: transparent;
         }
-        .chat-messages .msg .voice-msg .voice-label {
+        .chat-messages .msg-wrapper .msg .voice-msg .voice-label {
             font-size: 0.8rem;
             opacity: 0.7;
+        }
+        /* Файлы */
+        .chat-messages .msg-wrapper .msg .file-attachment {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            transition: 0.15s;
+        }
+        .chat-messages .msg-wrapper .msg .file-attachment:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .chat-messages .msg-wrapper .msg .file-attachment img {
+            max-width: 180px;
+            max-height: 120px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: #00000022;
+        }
+        .chat-messages .msg-wrapper .msg .file-attachment .file-icon {
+            font-size: 2rem;
+            color: var(--text-muted);
+        }
+        .chat-messages .msg-wrapper .msg .file-attachment .file-name {
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+        .chat-messages .msg-wrapper .msg .file-attachment .file-size {
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+        .chat-messages .msg-wrapper .msg-actions {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.2rem;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: 0.15s;
+        }
+        .chat-messages .msg-wrapper:hover .msg-actions {
+            opacity: 1;
+        }
+        .chat-messages .msg-wrapper .msg-actions button {
+            padding: 0.1rem 0.4rem;
+            border-radius: 12px;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .chat-messages .msg-wrapper .msg-actions button:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .chat-messages .msg-wrapper .msg-actions button.danger:hover {
+            background: rgba(239,68,68,0.2);
+            color: #f87171;
         }
         .chat-messages .system-msg {
             text-align: center;
@@ -846,16 +907,8 @@
             animation-delay: 0.4s;
         }
         @keyframes dotPulse {
-            0%,
-            80%,
-            100% {
-                opacity: 0.2;
-                transform: scale(0.8);
-            }
-            40% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
+            0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1.2); }
         }
 
         .chat-input {
@@ -920,13 +973,8 @@
             animation: pulseRed 1s infinite;
         }
         @keyframes pulseRed {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.15);
-            }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
         .chat-input .btn-send {
             padding: 0.7rem 1.4rem;
@@ -1109,6 +1157,102 @@
             color: #f87171;
         }
 
+        /* ===== FORWARD OVERLAY ===== */
+        .forward-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .forward-overlay.show {
+            display: flex;
+        }
+        .forward-box {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 1.6rem;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .forward-box h3 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .forward-box .contact-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .forward-box .contact-item-forward {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.6rem;
+            border-radius: 10px;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .forward-box .contact-item-forward:hover {
+            background: var(--bg-hover);
+        }
+        .forward-box .contact-item-forward .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .forward-box .contact-item-forward .info {
+            flex: 1;
+        }
+        .forward-box .contact-item-forward .info .name {
+            font-weight: 500;
+        }
+        .forward-box .contact-item-forward .info .username {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .forward-box .forward-actions {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+        }
+        .forward-box .forward-actions button {
+            padding: 0.5rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .forward-box .forward-actions .btn-forward {
+            background: #6c8cff;
+            color: #fff;
+        }
+        .forward-box .forward-actions .btn-forward:hover {
+            background: #5a7ae0;
+        }
+        .forward-box .forward-actions .btn-cancel {
+            background: var(--bg-elevated);
+        }
+        .forward-box .forward-actions .btn-cancel:hover {
+            background: var(--bg-hover);
+        }
+        .forward-box .no-contacts {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 1rem 0;
+        }
+
         /* ===== CALL OVERLAY ===== */
         .call-overlay {
             display: none;
@@ -1220,7 +1364,7 @@
             .auth-box {
                 padding: 2rem 1.6rem;
             }
-            .chat-messages .msg {
+            .chat-messages .msg-wrapper {
                 max-width: 85%;
             }
             .chat-header .actions button {
@@ -1492,7 +1636,7 @@
             <div class="chat-input">
                 <div class="input-wrap">
                     <button class="btn-icon" title="Смайлы" onclick="toggleEmojiPicker()"><i class="fas fa-smile"></i></button>
-                    <button class="btn-icon" title="Вложение" onclick="showToast('📎 Вложения скоро появятся')"><i class="fas fa-paperclip"></i></button>
+                    <button class="btn-icon" title="Вложение" onclick="document.getElementById('file-input').click()"><i class="fas fa-paperclip"></i></button>
                     <textarea id="msg-input" rows="1" placeholder="Напишите сообщение..." onkeydown="handleKey(event)"></textarea>
                     <button class="btn-icon" id="voice-btn" title="Голосовое сообщение" onclick="toggleVoiceRecording()"><i class="fas fa-microphone"></i></button>
                 </div>
@@ -1564,6 +1708,17 @@
         </div>
     </div>
 
+    <!-- ===== FORWARD OVERLAY ===== -->
+    <div class="forward-overlay" id="forward-overlay">
+        <div class="forward-box">
+            <h3>Переслать сообщение</h3>
+            <div class="contact-list" id="forward-contact-list"></div>
+            <div class="forward-actions">
+                <button class="btn-cancel" onclick="closeForward()">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== CALL OVERLAY ===== -->
     <div class="call-overlay" id="call-overlay">
         <div class="call-avatar" id="call-avatar" style="background:#6c8cff;">U</div>
@@ -1583,8 +1738,9 @@
     <!-- ===== TOAST ===== -->
     <div id="toast"></div>
 
-    <!-- ===== HIDDEN FILE INPUT ===== -->
+    <!-- ===== HIDDEN FILE INPUTS ===== -->
     <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" />
+    <input type="file" id="file-input" style="display:none;" onchange="handleFileSelected(event)" />
 
     <!-- ============================================================
     JAVASCRIPT
@@ -1639,6 +1795,7 @@
         let localStream = null;
         let authMode = 'login';
         let pendingLoginUser = null;
+        let forwardMsgData = null; // { text, fileData, fileName, fileType, type }
 
         // ===== DOM REFS =====
         const $ = id => document.getElementById(id);
@@ -1682,6 +1839,9 @@
         const searchResults = $('search-results');
         const searchInput = $('sidebar-search');
         const emojiPicker = $('emoji-picker');
+        const fileInput = $('file-input');
+        const forwardOverlay = $('forward-overlay');
+        const forwardContactList = $('forward-contact-list');
 
         // Profile refs
         const profileOverlay = $('profile-overlay');
@@ -1709,7 +1869,6 @@
             CONTACTS = stored.contacts || [];
             MESSAGES_BY_CONTACT = stored.messages || {};
 
-            // Восстановление темы
             const savedTheme = localStorage.getItem('pulsechat-theme');
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -1755,7 +1914,6 @@
             avatarFileInput.addEventListener('change', handleAvatarUpload);
             profileAvatarTrigger.addEventListener('click', () => avatarFileInput.click());
 
-            // Sync theme toggles
             landingThemeToggle.addEventListener('change', function() {
                 authThemeToggle.checked = this.checked;
                 applyTheme(this.checked);
@@ -2028,7 +2186,6 @@
                 return;
             }
 
-            // Ищем среди всех пользователей, кроме текущего
             const found = USERS.filter(u =>
                 u.id !== currentUser.id &&
                 (u.username.toLowerCase().includes(q) ||
@@ -2141,9 +2298,9 @@
                 currentUser.avatar = base64;
                 saveData();
                 updateProfileUI();
-                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0)
-                .toUpperCase();
+                sidebarAvatarLetter.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
                 showToast('✅ Аватар обновлён');
+                renderContacts(); // обновляем аватарки в контактах
             };
             reader.readAsDataURL(file);
             avatarFileInput.value = '';
@@ -2238,12 +2395,12 @@
                     const statusDot = user && user.status === 'online' ? '#34d399' : '#4e5668';
                     const active = c.id === currentContactId ? 'active' : '';
                     const unreadBadge = c.unread > 0 ? `<span class="unread">${c.unread}</span>` : '';
-                    const avatar = c.avatar && c.avatar.startsWith('data:image') ?
+                    let avatarHtml = c.avatar && c.avatar.startsWith('data:image') ?
                         `<img src="${c.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />` :
                         c.avatar || '?';
                     html += `
                         <div class="contact-item ${active}" data-id="${c.id}" onclick="selectContact('${c.id}')">
-                            <div class="avatar" style="background:${c.color || '#6c8cff'};">${avatar}</div>
+                            <div class="avatar" style="background:${c.color || '#6c8cff'};">${avatarHtml}</div>
                             <div class="info">
                                 <div class="name">${c.name}</div>
                                 <div class="last-msg">${c.lastMsg || ''}</div>
@@ -2270,10 +2427,10 @@
             currentContactId = id;
             const user = USERS.find(u => u.id === id);
             chatContactName.textContent = contact.name;
-            const avatar = contact.avatar && contact.avatar.startsWith('data:image') ?
+            let avatarHtml = contact.avatar && contact.avatar.startsWith('data:image') ?
                 `<img src="${contact.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />` :
                 contact.avatar || '?';
-            chatAvatar.innerHTML = avatar;
+            chatAvatar.innerHTML = avatarHtml;
             chatAvatar.style.background = contact.color || '#6c8cff';
             chatContactStatus.textContent = user && user.status === 'online' ? '● В сети' : '● Не в сети';
             chatContactStatus.style.color = user && user.status === 'online' ? '#34d399' : '#4e5668';
@@ -2296,11 +2453,11 @@
             if (msgs.length === 0) {
                 html += `<div class="system-msg" style="color:var(--text-muted);">Нет сообщений. Напишите что-нибудь!</div>`;
             } else {
-                msgs.forEach(m => {
+                msgs.forEach((m, idx) => {
                     const cls = m.from === 'me' ? 'out' : 'in';
-                    const isVoice = m.isVoice || false;
+                    const isOwn = m.from === 'me';
                     let content = '';
-                    if (isVoice) {
+                    if (m.type === 'voice') {
                         content = `
                             <div class="voice-msg">
                                 <span class="voice-label">🎤 Голосовое</span>
@@ -2309,15 +2466,37 @@
                                 </audio>
                             </div>
                         `;
+                    } else if (m.type === 'file') {
+                        const isImage = m.fileType && m.fileType.startsWith('image/');
+                        const fileIcon = isImage ? '' : '<i class="fas fa-file"></i>';
+                        const fileSize = m.fileData ? Math.round((m.fileData.length * 3/4) / 1024) : 0; // приблизительный размер в кб
+                        content = `
+                            <div class="file-attachment" onclick="downloadFile('${contactId}', ${idx})">
+                                ${isImage ? `<img src="${m.fileData}" alt="${m.fileName}" />` : `<span class="file-icon"><i class="fas fa-file"></i></span>`}
+                                <div>
+                                    <div class="file-name">${m.fileName || 'Файл'}</div>
+                                    <div class="file-size">${fileSize > 0 ? fileSize + ' KB' : ''}</div>
+                                </div>
+                            </div>
+                            ${m.text ? `<div style="margin-top:4px;">${m.text}</div>` : ''}
+                        `;
                     } else {
+                        // текст с эмодзи
                         content = m.text || '';
-                        // Простая поддержка emoji
                         content = content.replace(/:\)/g, '😊').replace(/:\(/g, '😢').replace(/:D/g, '😄').replace(/<3/g, '❤️');
                     }
+
                     html += `
-                        <div class="msg ${cls}">
-                            ${content}
-                            <span class="time">${m.time || ''}</span>
+                        <div class="msg-wrapper ${cls}">
+                            <div class="msg">
+                                ${content}
+                                <span class="time">${m.time || ''}</span>
+                            </div>
+                            ${isOwn ? `
+                            <div class="msg-actions">
+                                <button onclick="forwardMessage('${contactId}', ${idx})" title="Переслать"><i class="fas fa-share"></i></button>
+                                <button class="danger" onclick="deleteMessage('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
+                            </div>` : ''}
                         </div>
                     `;
                 });
@@ -2327,45 +2506,63 @@
         }
 
         // ============================================================
-        //  ОТПРАВКА СООБЩЕНИЙ
+        //  ОТПРАВКА СООБЩЕНИЙ (текст и файлы)
         // ============================================================
-        function sendMessage() {
-            const text = msgInput.value.trim();
-            if (!text) return;
+        function sendMessage(text, fileData, fileName, fileType) {
             if (!currentContactId) {
                 showToast('⚠️ Выберите контакт');
-                return;
+                return false;
             }
             const contact = CONTACTS.find(c => c.id === currentContactId);
             if (!contact) {
                 showToast('⚠️ Контакт не найден');
-                return;
+                return false;
+            }
+
+            text = text || msgInput.value.trim();
+            if (!text && !fileData) {
+                showToast('⚠️ Напишите сообщение или выберите файл');
+                return false;
             }
 
             const now = new Date();
             const time = now.getHours().toString().padStart(2, '0') + ':' +
                 now.getMinutes().toString().padStart(2, '0');
 
+            let msgObj = {
+                from: 'me',
+                time: time,
+            };
+
+            if (fileData) {
+                msgObj.type = 'file';
+                msgObj.fileData = fileData;
+                msgObj.fileName = fileName || 'Файл';
+                msgObj.fileType = fileType || 'application/octet-stream';
+                msgObj.text = text || '';
+            } else {
+                msgObj.type = 'text';
+                msgObj.text = text;
+            }
+
             if (!MESSAGES_BY_CONTACT[currentContactId]) {
                 MESSAGES_BY_CONTACT[currentContactId] = [];
             }
-            MESSAGES_BY_CONTACT[currentContactId].push({
-                from: 'me',
-                text: text,
-                time: time
-            });
+            MESSAGES_BY_CONTACT[currentContactId].push(msgObj);
 
-            contact.lastMsg = text;
+            // Обновляем последнее сообщение в контакте
+            let preview = msgObj.type === 'file' ? `📎 ${msgObj.fileName}` : msgObj.text;
+            contact.lastMsg = preview;
             contact.time = time;
 
-            msgInput.value = '';
+            if (!fileData) msgInput.value = '';
             msgInput.style.height = 'auto';
             renderMessages(currentContactId);
             renderContacts();
             saveData();
 
-            // Эмуляция ответа (для демонстрации)
-            if (Math.random() > 0.5) {
+            // Эмуляция ответа (только для текста)
+            if (!fileData && Math.random() > 0.5) {
                 setTimeout(() => {
                     const replies = ['😊 Отлично!', 'Понял!', 'Спасибо!', 'Договорились', 'Круто!', 'Да, давай', 'Ок!'];
                     const reply = replies[Math.floor(Math.random() * replies.length)];
@@ -2374,6 +2571,7 @@
                         now2.getMinutes().toString().padStart(2, '0');
                     MESSAGES_BY_CONTACT[currentContactId].push({
                         from: 'them',
+                        type: 'text',
                         text: reply,
                         time: time2
                     });
@@ -2385,6 +2583,29 @@
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 }, 1200 + Math.random() * 1800);
             }
+            return true;
+        }
+
+        function handleFileSelected(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            // Проверяем размер (для демо ограничим 5 МБ)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('⚠️ Файл слишком большой (макс. 5 МБ)');
+                fileInput.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const base64 = ev.target.result;
+                sendMessage('', base64, file.name, file.type);
+                fileInput.value = '';
+            };
+            reader.onerror = function() {
+                showToast('⚠️ Ошибка чтения файла');
+                fileInput.value = '';
+            };
+            reader.readAsDataURL(file);
         }
 
         function handleKey(e) {
@@ -2452,9 +2673,9 @@
                     }
                     MESSAGES_BY_CONTACT[currentContactId].push({
                         from: 'me',
+                        type: 'voice',
                         text: '🎤 Голосовое сообщение',
                         time: time,
-                        isVoice: true,
                         audioUrl: audioUrl
                     });
 
@@ -2482,6 +2703,165 @@
                 showToast('⚠️ Нет доступа к микрофону');
                 console.error(err);
             }
+        }
+
+        // ============================================================
+        //  УДАЛЕНИЕ СООБЩЕНИЙ
+        // ============================================================
+        function deleteMessage(contactId, index) {
+            if (!confirm('Удалить это сообщение?')) return;
+            const msgs = MESSAGES_BY_CONTACT[contactId];
+            if (!msgs || index < 0 || index >= msgs.length) return;
+            msgs.splice(index, 1);
+            if (msgs.length === 0) {
+                // обновляем последнее сообщение в контакте
+                const contact = CONTACTS.find(c => c.id === contactId);
+                if (contact) {
+                    contact.lastMsg = '';
+                    contact.time = '';
+                }
+            } else {
+                const last = msgs[msgs.length - 1];
+                const contact = CONTACTS.find(c => c.id === contactId);
+                if (contact) {
+                    contact.lastMsg = last.type === 'file' ? `📎 ${last.fileName}` : last.text;
+                    contact.time = last.time;
+                }
+            }
+            renderMessages(contactId);
+            renderContacts();
+            saveData();
+            showToast('🗑 Сообщение удалено');
+        }
+
+        // ============================================================
+        //  ПЕРЕСЫЛКА СООБЩЕНИЙ
+        // ============================================================
+        function forwardMessage(contactId, index) {
+            const msgs = MESSAGES_BY_CONTACT[contactId];
+            if (!msgs || index < 0 || index >= msgs.length) return;
+            const msg = msgs[index];
+            // Сохраняем данные сообщения для пересылки
+            forwardMsgData = {
+                text: msg.text || '',
+                fileData: msg.fileData || null,
+                fileName: msg.fileName || null,
+                fileType: msg.fileType || null,
+                type: msg.type || 'text',
+                audioUrl: msg.audioUrl || null
+            };
+            // Показываем модалку с контактами
+            showForwardModal(contactId);
+        }
+
+        function showForwardModal(excludeContactId) {
+            const list = forwardContactList;
+            list.innerHTML = '';
+            const available = CONTACTS.filter(c => c.id !== excludeContactId && c.id !== currentUser.id);
+            if (available.length === 0) {
+                list.innerHTML = '<div class="no-contacts">Нет контактов для пересылки</div>';
+            } else {
+                available.forEach(c => {
+                    const user = USERS.find(u => u.id === c.id);
+                    const avatarHtml = c.avatar && c.avatar.startsWith('data:image') ?
+                        `<img src="${c.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />` :
+                        c.avatar || '?';
+                    const div = document.createElement('div');
+                    div.className = 'contact-item-forward';
+                    div.innerHTML = `
+                        <div class="avatar" style="background:${c.color || '#6c8cff'};">${avatarHtml}</div>
+                        <div class="info">
+                            <div class="name">${c.name}</div>
+                            <div class="username">${user ? user.username : ''}</div>
+                        </div>
+                    `;
+                    div.addEventListener('click', () => {
+                        // Пересылаем в этот контакт
+                        performForward(c.id);
+                    });
+                    list.appendChild(div);
+                });
+            }
+            forwardOverlay.classList.add('show');
+        }
+
+        function performForward(targetContactId) {
+            if (!forwardMsgData) return;
+            const contact = CONTACTS.find(c => c.id === targetContactId);
+            if (!contact) {
+                showToast('⚠️ Контакт не найден');
+                return;
+            }
+
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0');
+
+            let msgObj = {
+                from: 'me',
+                time: time,
+            };
+
+            if (forwardMsgData.type === 'file' && forwardMsgData.fileData) {
+                msgObj.type = 'file';
+                msgObj.fileData = forwardMsgData.fileData;
+                msgObj.fileName = forwardMsgData.fileName || 'Файл';
+                msgObj.fileType = forwardMsgData.fileType || 'application/octet-stream';
+                msgObj.text = forwardMsgData.text || '';
+            } else if (forwardMsgData.type === 'voice' && forwardMsgData.audioUrl) {
+                msgObj.type = 'voice';
+                msgObj.text = '🎤 Голосовое (переслано)';
+                msgObj.audioUrl = forwardMsgData.audioUrl;
+            } else {
+                msgObj.type = 'text';
+                msgObj.text = forwardMsgData.text || '';
+            }
+
+            if (!MESSAGES_BY_CONTACT[targetContactId]) {
+                MESSAGES_BY_CONTACT[targetContactId] = [];
+            }
+            MESSAGES_BY_CONTACT[targetContactId].push(msgObj);
+
+            // Обновляем последнее сообщение в контакте получателя
+            let preview = msgObj.type === 'file' ? `📎 ${msgObj.fileName}` : msgObj.text;
+            if (msgObj.type === 'voice') preview = '🎤 Голосовое (переслано)';
+            contact.lastMsg = preview;
+            contact.time = time;
+
+            // Если текущий открыт чат получателя, обновляем его
+            if (currentContactId === targetContactId) {
+                renderMessages(targetContactId);
+            }
+            renderContacts();
+            saveData();
+            showToast(`✅ Сообщение переслано ${contact.name}`);
+            closeForward();
+            forwardMsgData = null;
+        }
+
+        function closeForward() {
+            forwardOverlay.classList.remove('show');
+            forwardMsgData = null;
+        }
+
+        // ============================================================
+        //  СКАЧИВАНИЕ ФАЙЛОВ
+        // ============================================================
+        function downloadFile(contactId, index) {
+            const msgs = MESSAGES_BY_CONTACT[contactId];
+            if (!msgs || index < 0 || index >= msgs.length) return;
+            const msg = msgs[index];
+            if (msg.type !== 'file' || !msg.fileData) {
+                showToast('⚠️ Файл не найден');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = msg.fileData;
+            link.download = msg.fileName || 'file';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast(`📥 Скачивание ${msg.fileName}`);
         }
 
         // ============================================================
@@ -2515,19 +2895,16 @@
             localVideo.style.display = 'none';
             remoteVideo.style.display = 'none';
 
-            // Запрашиваем доступ к микрофону и камере
             navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                 .then(stream => {
                     localStream = stream;
                     localVideo.srcObject = stream;
                     localVideo.style.display = 'block';
-                    // Включаем камеру по умолчанию
                     isCameraOn = true;
                     callCamBtn.innerHTML = '<i class="fas fa-video"></i>';
                     callCamBtn.classList.add('active');
                 })
                 .catch(() => {
-                    // Если камера недоступна, пробуем только аудио
                     navigator.mediaDevices.getUserMedia({ audio: true })
                         .then(stream => {
                             localStream = stream;
@@ -2590,6 +2967,7 @@
                 }
                 MESSAGES_BY_CONTACT[currentContactId].push({
                     from: 'system',
+                    type: 'text',
                     text: `📞 Звонок с ${contact.name} (${Math.floor(callSeconds/60)}:${String(callSeconds%60).padStart(2,'0')})`,
                     time: time
                 });
@@ -2661,6 +3039,7 @@
             if (e.key === 'Escape') {
                 if (profileOverlay.classList.contains('show')) closeProfile();
                 if (callOverlay.classList.contains('show')) endCall();
+                if (forwardOverlay.classList.contains('show')) closeForward();
                 if (emojiPickerVisible) {
                     emojiPickerVisible = false;
                     emojiPicker.style.display = 'none';
@@ -2680,6 +3059,7 @@
         console.log('🌓 Тема переключается до входа.');
         console.log('📦 Кнопка "Скачать для Windows" добавлена.');
         console.log('🎥 Видеозвонки с камерой (демо).');
+        console.log('📎 Добавлены вложения, пересылка, удаление, скачивание файлов.');
     </script>
 </body>
 </html>
