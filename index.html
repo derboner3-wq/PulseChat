@@ -7,7 +7,7 @@
     <script src="https://accounts.google.com/gsi/client"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        /* ===== THEME VARIABLES ===== */
+        /* Стили такие же, как в предыдущей версии, не меняем */
         :root {
             --bg-primary: #0e0e12;
             --bg-secondary: #1a1a22;
@@ -68,19 +68,10 @@
             background: none;
             color: inherit;
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--text-muted);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
         .page {
             display: none;
@@ -88,21 +79,13 @@
             height: 100vh;
             animation: fadeIn 0.3s ease;
         }
-        .page.active {
-            display: flex;
-        }
+        .page.active { display: flex; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== LANDING (только Google) ===== */
+        /* ===== LANDING ===== */
         #landing-page {
             flex-direction: column;
             align-items: center;
@@ -124,13 +107,9 @@
             color: var(--text-muted);
             transition: 0.2s;
         }
-        #landing-page .theme-toggle-landing:hover {
-            color: var(--text-primary);
-        }
+        #landing-page .theme-toggle-landing:hover { color: var(--text-primary); }
         #landing-page .theme-toggle-landing input[type="checkbox"] {
-            width: 40px;
-            height: 22px;
-            border-radius: 11px;
+            width: 40px; height: 22px; border-radius: 11px;
             background: var(--bg-input);
             border: 1px solid var(--border);
             appearance: none;
@@ -138,23 +117,17 @@
             transition: 0.2s;
             position: relative;
         }
-        #landing-page .theme-toggle-landing input[type="checkbox"]:checked {
-            background: #6c8cff;
-        }
+        #landing-page .theme-toggle-landing input[type="checkbox"]:checked { background: #6c8cff; }
         #landing-page .theme-toggle-landing input[type="checkbox"]::before {
             content: '';
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 18px; height: 18px;
             border-radius: 50%;
             background: #fff;
-            top: 1px;
-            left: 1px;
+            top: 1px; left: 1px;
             transition: 0.2s;
         }
-        #landing-page .theme-toggle-landing input[type="checkbox"]:checked::before {
-            left: 19px;
-        }
+        #landing-page .theme-toggle-landing input[type="checkbox"]:checked::before { left: 19px; }
         #landing-page .logo {
             font-size: 3.8rem;
             font-weight: 800;
@@ -251,21 +224,12 @@
             border: none;
             overflow: hidden;
         }
-        .sidebar-header .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .sidebar-header .user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 2px #6c8cff;
-        }
+        .sidebar-header .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .sidebar-header .user-avatar:hover { transform: scale(1.05); box-shadow: 0 0 0 2px #6c8cff; }
         .sidebar-header .user-avatar .status-dot {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
+            bottom: 0; right: 0;
+            width: 12px; height: 12px;
             border-radius: 50%;
             background: #34d399;
             border: 2px solid var(--bg-secondary);
@@ -285,9 +249,7 @@
             pointer-events: none;
             border: 1px solid var(--border);
         }
-        .user-avatar:hover .id-tooltip {
-            display: block;
-        }
+        .user-avatar:hover .id-tooltip { display: block; }
 
         .sidebar-search {
             padding: 0.8rem 1.2rem;
@@ -313,9 +275,7 @@
             color: var(--text-primary);
             font-size: 0.85rem;
         }
-        .sidebar-search .search-wrap input::placeholder {
-            color: var(--text-muted);
-        }
+        .sidebar-search .search-wrap input::placeholder { color: var(--text-muted); }
         .sidebar-search .search-wrap input:focus {
             border-color: #6c8cff;
             background: var(--bg-elevated);
@@ -343,15 +303,10 @@
             cursor: pointer;
             gap: 0.8rem;
         }
-        .contact-item:hover {
-            background: var(--bg-hover);
-        }
-        .contact-item.active {
-            background: rgba(108, 140, 255, 0.15);
-        }
+        .contact-item:hover { background: var(--bg-hover); }
+        .contact-item.active { background: rgba(108, 140, 255, 0.15); }
         .contact-item .avatar {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -364,24 +319,15 @@
             overflow: hidden;
             background: var(--bg-elevated);
         }
-        .contact-item .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .contact-item .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .contact-item .avatar .status-dot-sm {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
+            bottom: 0; right: 0;
+            width: 10px; height: 10px;
             border-radius: 50%;
             border: 2px solid var(--bg-secondary);
         }
-        .contact-item .info {
-            flex: 1;
-            min-width: 0;
-        }
+        .contact-item .info { flex: 1; min-width: 0; }
         .contact-item .info .name {
             font-weight: 500;
             font-size: 0.95rem;
@@ -438,12 +384,9 @@
             gap: 0.6rem;
             transition: 0.15s;
         }
-        .search-result-item:hover {
-            background: var(--bg-hover);
-        }
+        .search-result-item:hover { background: var(--bg-hover); }
         .search-result-item .avatar {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -455,15 +398,8 @@
             overflow: hidden;
             background: var(--bg-elevated);
         }
-        .search-result-item .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .search-result-item .info {
-            flex: 1;
-            min-width: 0;
-        }
+        .search-result-item .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .search-result-item .info { flex: 1; min-width: 0; }
         .search-result-item .info .name {
             font-weight: 500;
             font-size: 0.85rem;
@@ -484,9 +420,7 @@
             border: none;
             cursor: pointer;
         }
-        .search-result-item .action-btn:hover {
-            background: #5a7ae0;
-        }
+        .search-result-item .action-btn:hover { background: #5a7ae0; }
         .search-result-item .action-btn.added {
             background: var(--bg-input);
             color: var(--text-muted);
@@ -522,8 +456,7 @@
             cursor: pointer;
         }
         .chat-header .left .avatar {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -533,11 +466,7 @@
             overflow: hidden;
             background: var(--bg-elevated);
         }
-        .chat-header .left .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .chat-header .left .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .chat-header .left .info .name {
             font-weight: 600;
             font-size: 1rem;
@@ -548,16 +477,13 @@
             color: #34d399;
             display: none;
         }
-        .chat-header .left .info .status.show {
-            display: block;
-        }
+        .chat-header .left .info .status.show { display: block; }
         .chat-header .actions {
             display: flex;
             gap: 0.2rem;
         }
         .chat-header .actions button {
-            width: 38px;
-            height: 38px;
+            width: 38px; height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -566,14 +492,8 @@
             color: var(--text-muted);
             font-size: 1.1rem;
         }
-        .chat-header .actions button:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-        .chat-header .actions button.danger:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-        }
+        .chat-header .actions button:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .chat-header .actions button.danger:hover { background: rgba(239,68,68,0.2); color: #f87171; }
 
         .chat-messages {
             flex: 1;
@@ -591,12 +511,8 @@
             max-width: 72%;
             position: relative;
         }
-        .chat-messages .msg-wrapper.out {
-            align-self: flex-end;
-        }
-        .chat-messages .msg-wrapper.in {
-            align-self: flex-start;
-        }
+        .chat-messages .msg-wrapper.out { align-self: flex-end; }
+        .chat-messages .msg-wrapper.in { align-self: flex-start; }
         .chat-messages .msg-wrapper .msg {
             padding: 0.6rem 1rem;
             border-radius: 16px;
@@ -635,10 +551,7 @@
             border-radius: 20px;
             background: transparent;
         }
-        .chat-messages .msg-wrapper .msg .voice-msg .voice-label {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
+        .chat-messages .msg-wrapper .msg .voice-msg .voice-label { font-size: 0.8rem; opacity: 0.7; }
         .chat-messages .msg-wrapper .msg-actions {
             display: flex;
             gap: 0.4rem;
@@ -647,9 +560,7 @@
             opacity: 0;
             transition: 0.15s;
         }
-        .chat-messages .msg-wrapper:hover .msg-actions {
-            opacity: 1;
-        }
+        .chat-messages .msg-wrapper:hover .msg-actions { opacity: 1; }
         .chat-messages .msg-wrapper .msg-actions button {
             padding: 0.1rem 0.4rem;
             border-radius: 12px;
@@ -661,14 +572,8 @@
             align-items: center;
             gap: 0.2rem;
         }
-        .chat-messages .msg-wrapper .msg-actions button:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-        .chat-messages .msg-wrapper .msg-actions button.danger:hover {
-            background: rgba(239,68,68,0.2);
-            color: #f87171;
-        }
+        .chat-messages .msg-wrapper .msg-actions button:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .chat-messages .msg-wrapper .msg-actions button.danger:hover { background: rgba(239,68,68,0.2); color: #f87171; }
         .chat-messages .system-msg {
             text-align: center;
             font-size: 0.95rem;
@@ -692,20 +597,13 @@
             display: none;
             border: 1px solid var(--border);
         }
-        .chat-messages .typing-indicator.show {
-            display: block;
-            animation: msgIn 0.3s ease;
-        }
+        .chat-messages .typing-indicator.show { display: block; animation: msgIn 0.3s ease; }
         .chat-messages .typing-indicator span {
             animation: dotPulse 1.4s infinite;
             display: inline-block;
         }
-        .chat-messages .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .chat-messages .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .chat-messages .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .chat-messages .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dotPulse {
             0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
             40% { opacity: 1; transform: scale(1.2); }
@@ -748,9 +646,7 @@
             line-height: 1.5;
             font-family: inherit;
         }
-        .chat-input .input-wrap textarea::placeholder {
-            color: var(--text-muted);
-        }
+        .chat-input .input-wrap textarea::placeholder { color: var(--text-muted); }
         .chat-input .input-wrap .btn-icon {
             padding: 0.3rem 0.3rem;
             border-radius: 50%;
@@ -761,13 +657,9 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
         }
-        .chat-input .input-wrap .btn-icon:hover {
-            color: var(--text-primary);
-            background: var(--bg-hover);
-        }
+        .chat-input .input-wrap .btn-icon:hover { color: var(--text-primary); background: var(--bg-hover); }
         .chat-input .input-wrap .btn-icon.recording {
             color: #f87171;
             animation: pulseRed 1s infinite;
@@ -796,7 +688,7 @@
             box-shadow: 0 8px 24px rgba(108, 140, 255, 0.45);
         }
 
-        /* ===== PROFILE OVERLAY (для текущего пользователя) ===== */
+        /* ===== PROFILE OVERLAY ===== */
         .profile-overlay {
             display: none;
             position: fixed;
@@ -808,9 +700,7 @@
             justify-content: center;
             animation: fadeIn 0.3s ease;
         }
-        .profile-overlay.show {
-            display: flex;
-        }
+        .profile-overlay.show { display: flex; }
         .profile-box {
             background: var(--bg-secondary);
             border-radius: 24px;
@@ -829,8 +719,7 @@
             margin-bottom: 1.5rem;
         }
         .profile-box .profile-header .avatar-big {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             background: var(--bg-elevated);
             display: flex;
@@ -845,15 +734,11 @@
             position: relative;
             border: 3px solid #6c8cff;
         }
-        .profile-box .profile-header .avatar-big img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .profile-box .profile-header .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
         .profile-box .profile-header .avatar-big .upload-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -863,20 +748,10 @@
             transition: 0.2s;
             border-radius: 50%;
         }
-        .profile-box .profile-header .avatar-big:hover .upload-overlay {
-            opacity: 1;
-        }
-        .profile-box .profile-header .info h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
-        .profile-box .profile-header .info p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        .profile-box .field {
-            margin-bottom: 1.2rem;
-        }
+        .profile-box .profile-header .avatar-big:hover .upload-overlay { opacity: 1; }
+        .profile-box .profile-header .info h2 { font-size: 1.4rem; font-weight: 600; }
+        .profile-box .profile-header .info p { color: var(--text-muted); font-size: 0.9rem; }
+        .profile-box .field { margin-bottom: 1.2rem; }
         .profile-box .field label {
             display: block;
             font-size: 0.8rem;
@@ -907,9 +782,7 @@
             background: var(--bg-elevated);
             box-shadow: 0 0 0 4px rgba(108, 140, 255, 0.15);
         }
-        .profile-box .field input::placeholder {
-            color: var(--text-muted);
-        }
+        .profile-box .field input::placeholder { color: var(--text-muted); }
         .profile-box .profile-actions {
             display: flex;
             gap: 0.8rem;
@@ -924,54 +797,33 @@
             transition: 0.2s;
             min-width: 100px;
         }
-        .btn-save {
-            background: #6c8cff;
-            color: #fff;
-        }
-        .btn-save:hover {
-            background: #5a7ae0;
-        }
-        .btn-close {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-        .btn-close:hover {
-            background: var(--bg-hover);
-        }
-        .btn-danger {
-            background: #ef4444;
-            color: #fff;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+        .btn-save { background: #6c8cff; color: #fff; }
+        .btn-save:hover { background: #5a7ae0; }
+        .btn-close { background: var(--bg-elevated); color: var(--text-primary); }
+        .btn-close:hover { background: var(--bg-hover); }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
         .profile-box .pass-msg {
             font-size: 0.85rem;
             margin-top: 0.4rem;
             color: var(--text-muted);
         }
-        .profile-box .pass-msg.success {
-            color: #4cd9a0;
-        }
-        .profile-box .pass-msg.error {
-            color: #f87171;
-        }
+        .profile-box .pass-msg.success { color: #4cd9a0; }
+        .profile-box .pass-msg.error { color: #f87171; }
 
-        /* ===== CONTACT PROFILE OVERLAY (просмотр контакта) ===== */
+        /* ===== CONTACT PROFILE OVERLAY ===== */
         .contact-profile-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(8px);
             z-index: 1001;
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.3s ease;
         }
-        .contact-profile-overlay.show {
-            display: flex;
-        }
+        .contact-profile-overlay.show { display: flex; }
         .contact-profile-box {
             background: var(--bg-secondary);
             border-radius: 24px;
@@ -983,8 +835,7 @@
             text-align: center;
         }
         .contact-profile-box .avatar-big {
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             border-radius: 50%;
             background: var(--bg-elevated);
             display: flex;
@@ -997,26 +848,10 @@
             margin: 0 auto 1rem;
             border: 3px solid #6c8cff;
         }
-        .contact-profile-box .avatar-big img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .contact-profile-box h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
-        .contact-profile-box .username {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .contact-profile-box .phone {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
+        .contact-profile-box .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+        .contact-profile-box h2 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .contact-profile-box .username { color: var(--text-muted); font-size: 1rem; margin-bottom: 0.5rem; }
+        .contact-profile-box .phone { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
         .contact-profile-box .close-btn {
             padding: 0.5rem 1.5rem;
             border-radius: 30px;
@@ -1025,87 +860,14 @@
             font-weight: 600;
             transition: 0.15s;
         }
-        .contact-profile-box .close-btn:hover {
-            background: var(--bg-hover);
-        }
-
-        /* ===== DELETE OPTION OVERLAY ===== */
-        .delete-option-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1002;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.2s ease;
-        }
-        .delete-option-overlay.show {
-            display: flex;
-        }
-        .delete-option-box {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 1.8rem 2rem;
-            max-width: 380px;
-            width: 90%;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-        .delete-option-box h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-        .delete-option-box p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-        .delete-option-box .btn-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .delete-option-box .btn-group button {
-            padding: 0.6rem 1.4rem;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: 0.15s;
-            min-width: 120px;
-        }
-        .delete-option-box .btn-for-all {
-            background: #ef4444;
-            color: #fff;
-        }
-        .delete-option-box .btn-for-all:hover {
-            background: #dc2626;
-        }
-        .delete-option-box .btn-for-me {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-        .delete-option-box .btn-for-me:hover {
-            background: var(--bg-hover);
-        }
-        .delete-option-box .btn-cancel-delete {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-        .delete-option-box .btn-cancel-delete:hover {
-            background: var(--bg-hover);
-        }
+        .contact-profile-box .close-btn:hover { background: var(--bg-hover); }
 
         /* ===== CALL OVERLAY ===== */
         .call-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(16px);
             z-index: 1000;
             align-items: center;
@@ -1113,12 +875,9 @@
             flex-direction: column;
             animation: fadeIn 0.3s ease;
         }
-        .call-overlay.show {
-            display: flex;
-        }
+        .call-overlay.show { display: flex; }
         .call-overlay .call-avatar {
-            width: 100px;
-            height: 100px;
+            width: 100px; height: 100px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1131,21 +890,9 @@
             overflow: hidden;
             background: var(--bg-elevated);
         }
-        .call-overlay .call-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .call-overlay .call-name {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #fff;
-        }
-        .call-overlay .call-status {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
+        .call-overlay .call-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .call-overlay .call-name { font-size: 1.8rem; font-weight: 600; color: #fff; }
+        .call-overlay .call-status { font-size: 1rem; color: var(--text-muted); margin-top: 0.2rem; }
         .call-overlay .call-timer {
             font-size: 1.4rem;
             color: var(--text-primary);
@@ -1158,8 +905,7 @@
             margin-top: 2.4rem;
         }
         .call-overlay .call-actions button {
-            width: 64px;
-            height: 64px;
+            width: 64px; height: 64px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1169,20 +915,10 @@
             color: var(--text-primary);
             background: var(--bg-card);
         }
-        .call-overlay .call-actions button:hover {
-            transform: scale(1.08);
-        }
-        .call-overlay .call-actions .end-call {
-            background: #ef4444;
-            color: #fff;
-        }
-        .call-overlay .call-actions .end-call:hover {
-            background: #dc2626;
-        }
-        .call-overlay .call-actions .mute-call.active {
-            background: rgba(239, 68, 68, 0.3);
-            color: #f87171;
-        }
+        .call-overlay .call-actions button:hover { transform: scale(1.08); }
+        .call-overlay .call-actions .end-call { background: #ef4444; color: #fff; }
+        .call-overlay .call-actions .end-call:hover { background: #dc2626; }
+        .call-overlay .call-actions .mute-call.active { background: rgba(239,68,68,0.3); color: #f87171; }
 
         /* ===== TOAST ===== */
         #toast {
@@ -1205,137 +941,48 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .messenger-sidebar {
-                width: 220px;
-                min-width: 220px;
-            }
-            #landing-page h1 {
-                font-size: 2.2rem;
-            }
-            #landing-page .logo {
-                font-size: 2.8rem;
-            }
-            .chat-messages .msg-wrapper {
-                max-width: 85%;
-            }
-            .chat-header .actions button {
-                width: 34px;
-                height: 34px;
-                font-size: 0.95rem;
-            }
-            .profile-box {
-                padding: 1.5rem;
-                max-width: 95%;
-            }
-            #landing-page .theme-toggle-landing {
-                top: 1rem;
-                right: 1rem;
-                font-size: 1rem;
-            }
+            .messenger-sidebar { width: 220px; min-width: 220px; }
+            #landing-page h1 { font-size: 2.2rem; }
+            #landing-page .logo { font-size: 2.8rem; }
+            .chat-messages .msg-wrapper { max-width: 85%; }
+            .chat-header .actions button { width: 34px; height: 34px; font-size: 0.95rem; }
+            .profile-box { padding: 1.5rem; max-width: 95%; }
+            #landing-page .theme-toggle-landing { top: 1rem; right: 1rem; font-size: 1rem; }
         }
         @media (max-width: 600px) {
-            .messenger-sidebar {
-                width: 60px;
-                min-width: 60px;
-            }
+            .messenger-sidebar { width: 60px; min-width: 60px; }
             .messenger-sidebar .brand,
             .messenger-sidebar .sidebar-search,
             .messenger-sidebar .contact-item .info,
             .messenger-sidebar .contact-item .time,
             .messenger-sidebar .contact-item .unread,
-            .messenger-sidebar .section-label {
-                display: none;
-            }
-            .messenger-sidebar .sidebar-header {
-                justify-content: center;
-                padding: 0.8rem 0.4rem;
-            }
-            .messenger-sidebar .contact-item {
-                padding: 0.6rem 0.4rem;
-                justify-content: center;
-            }
-            .messenger-sidebar .contact-item .avatar {
-                width: 36px;
-                height: 36px;
-                font-size: 0.7rem;
-            }
-            .messenger-sidebar .contact-item .avatar .status-dot-sm {
-                width: 8px;
-                height: 8px;
-            }
-            .chat-messages {
-                padding: 0.8rem 0.8rem;
-            }
-            .chat-input {
-                padding: 0.4rem 0.6rem 0.8rem;
-            }
-            .chat-input .input-wrap {
-                padding: 0.2rem 0.6rem;
-                min-height: 40px;
-            }
-            .chat-input .btn-send {
-                padding: 0.5rem 1rem;
-                height: 40px;
-                font-size: 0.85rem;
-            }
-            .chat-header {
-                padding: 0.4rem 0.8rem;
-                min-height: 54px;
-            }
-            .chat-header .left .info .name {
-                font-size: 0.85rem;
-            }
-            .chat-header .left .avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 0.7rem;
-            }
-            #landing-page h1 {
-                font-size: 1.8rem;
-            }
-            .landing-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .call-overlay .call-avatar {
-                width: 72px;
-                height: 72px;
-                font-size: 2rem;
-            }
-            .call-overlay .call-name {
-                font-size: 1.4rem;
-            }
-            .call-overlay .call-actions button {
-                width: 52px;
-                height: 52px;
-                font-size: 1.3rem;
-            }
-            .profile-box .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            #landing-page .theme-toggle-landing {
-                top: 0.8rem;
-                right: 0.8rem;
-                font-size: 0.85rem;
-            }
-            #landing-page .theme-toggle-landing input[type="checkbox"] {
-                width: 32px;
-                height: 18px;
-            }
-            #landing-page .theme-toggle-landing input[type="checkbox"]::before {
-                width: 14px;
-                height: 14px;
-            }
-            #landing-page .theme-toggle-landing input[type="checkbox"]:checked::before {
-                left: 15px;
-            }
+            .messenger-sidebar .section-label { display: none; }
+            .messenger-sidebar .sidebar-header { justify-content: center; padding: 0.8rem 0.4rem; }
+            .messenger-sidebar .contact-item { padding: 0.6rem 0.4rem; justify-content: center; }
+            .messenger-sidebar .contact-item .avatar { width: 36px; height: 36px; font-size: 0.7rem; }
+            .messenger-sidebar .contact-item .avatar .status-dot-sm { width: 8px; height: 8px; }
+            .chat-messages { padding: 0.8rem 0.8rem; }
+            .chat-input { padding: 0.4rem 0.6rem 0.8rem; }
+            .chat-input .input-wrap { padding: 0.2rem 0.6rem; min-height: 40px; }
+            .chat-input .btn-send { padding: 0.5rem 1rem; height: 40px; font-size: 0.85rem; }
+            .chat-header { padding: 0.4rem 0.8rem; min-height: 54px; }
+            .chat-header .left .info .name { font-size: 0.85rem; }
+            .chat-header .left .avatar { width: 32px; height: 32px; font-size: 0.7rem; }
+            #landing-page h1 { font-size: 1.8rem; }
+            .landing-buttons { flex-direction: column; align-items: center; }
+            .call-overlay .call-avatar { width: 72px; height: 72px; font-size: 2rem; }
+            .call-overlay .call-name { font-size: 1.4rem; }
+            .call-overlay .call-actions button { width: 52px; height: 52px; font-size: 1.3rem; }
+            .profile-box .profile-header { flex-direction: column; text-align: center; }
+            #landing-page .theme-toggle-landing { top: 0.8rem; right: 0.8rem; font-size: 0.85rem; }
+            #landing-page .theme-toggle-landing input[type="checkbox"] { width: 32px; height: 18px; }
+            #landing-page .theme-toggle-landing input[type="checkbox"]::before { width: 14px; height: 14px; }
+            #landing-page .theme-toggle-landing input[type="checkbox"]:checked::before { left: 15px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- ===== LANDING PAGE (только Google) ===== -->
+    <!-- ===== LANDING ===== -->
     <div id="landing-page" class="page active">
         <div class="theme-toggle-landing">
             <i class="fas fa-moon"></i>
@@ -1370,7 +1017,7 @@
         </div>
     </div>
 
-    <!-- ===== MESSENGER PAGE ===== -->
+    <!-- ===== MESSENGER ===== -->
     <div id="messenger-page" class="page">
         <div class="messenger-sidebar">
             <div class="sidebar-header">
@@ -1422,29 +1069,29 @@
                 <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Отправить</button>
             </div>
             <div id="emoji-picker" style="display:none; padding:0.5rem 1rem; background:var(--bg-card); border-top:1px solid var(--border); overflow-y:auto; max-height:150px; display:none; flex-wrap:wrap; gap:0.3rem;">
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('😊')">😊</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('😂')">😂</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('❤️')">❤️</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🔥')">🔥</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('👍')">👍</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('👀')">👀</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('✨')">✨</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🎉')">🎉</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('💪')">💪</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🤔')">🤔</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('😎')">😎</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🥳')">🥳</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('💀')">💀</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🌈')">🌈</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🍕')">🍕</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('☕')">☕</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('🎮')">🎮</span>
-                <span style="cursor:pointer;font-size:1.5rem;padding:0.2rem 0.4rem;border-radius:4px;transition:0.15s;display:inline-block;" onclick="insertEmoji('📚')">📚</span>
+                <span onclick="insertEmoji('😊')">😊</span>
+                <span onclick="insertEmoji('😂')">😂</span>
+                <span onclick="insertEmoji('❤️')">❤️</span>
+                <span onclick="insertEmoji('🔥')">🔥</span>
+                <span onclick="insertEmoji('👍')">👍</span>
+                <span onclick="insertEmoji('👀')">👀</span>
+                <span onclick="insertEmoji('✨')">✨</span>
+                <span onclick="insertEmoji('🎉')">🎉</span>
+                <span onclick="insertEmoji('💪')">💪</span>
+                <span onclick="insertEmoji('🤔')">🤔</span>
+                <span onclick="insertEmoji('😎')">😎</span>
+                <span onclick="insertEmoji('🥳')">🥳</span>
+                <span onclick="insertEmoji('💀')">💀</span>
+                <span onclick="insertEmoji('🌈')">🌈</span>
+                <span onclick="insertEmoji('🍕')">🍕</span>
+                <span onclick="insertEmoji('☕')">☕</span>
+                <span onclick="insertEmoji('🎮')">🎮</span>
+                <span onclick="insertEmoji('📚')">📚</span>
             </div>
         </div>
     </div>
 
-    <!-- ===== PROFILE OVERLAY (для текущего пользователя) ===== -->
+    <!-- ===== PROFILE OVERLAY ===== -->
     <div class="profile-overlay" id="profile-overlay">
         <div class="profile-box">
             <div class="profile-header">
@@ -1487,7 +1134,7 @@
         </div>
     </div>
 
-    <!-- ===== CONTACT PROFILE OVERLAY (просмотр контакта) ===== -->
+    <!-- ===== CONTACT PROFILE OVERLAY ===== -->
     <div class="contact-profile-overlay" id="contact-profile-overlay">
         <div class="contact-profile-box">
             <div class="avatar-big" id="contact-profile-avatar">?</div>
@@ -1495,19 +1142,6 @@
             <div class="username" id="contact-profile-username">@username</div>
             <div class="phone" id="contact-profile-phone">📱 +7 999 123-45-67</div>
             <button class="close-btn" onclick="closeContactProfile()">Закрыть</button>
-        </div>
-    </div>
-
-    <!-- ===== DELETE OPTION OVERLAY ===== -->
-    <div class="delete-option-overlay" id="delete-option-overlay">
-        <div class="delete-option-box">
-            <h3>Удалить сообщение</h3>
-            <p>Выберите, для кого удалить это сообщение:</p>
-            <div class="btn-group">
-                <button class="btn-for-all" id="delete-for-all-btn">Для всех</button>
-                <button class="btn-for-me" id="delete-for-me-btn">Для себя</button>
-                <button class="btn-cancel-delete" id="delete-cancel-btn">Отмена</button>
-            </div>
         </div>
     </div>
 
@@ -1533,9 +1167,6 @@
     <!-- ===== HIDDEN FILE INPUT ===== -->
     <input type="file" id="avatar-file-input" accept="image/*" style="display:none;" />
 
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
     <script>
         // ============================================================
         //  ХРАНЕНИЕ
@@ -1548,21 +1179,21 @@
                 if (raw) {
                     const data = JSON.parse(raw);
                     if (!data.users) data.users = [];
-                    if (!data.contacts) data.contacts = [];
-                    if (!data.messages) data.messages = {};
+                    if (!data.contacts) data.contacts = {}; // { userId: [contactIds] }
+                    if (!data.messages) data.messages = {}; // { userId: { contactId: [messages] } }
                     if (!data.currentUser) data.currentUser = null;
                     return data;
                 }
             } catch (e) { console.warn('Ошибка загрузки данных', e); }
-            return { users: [], contacts: [], messages: {}, currentUser: null };
+            return { users: [], contacts: {}, messages: {}, currentUser: null };
         }
 
         function saveData() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
                     users: USERS,
-                    contacts: CONTACTS,
-                    messages: MESSAGES_BY_CONTACT,
+                    contacts: CONTACTS_BY_USER,
+                    messages: MESSAGES_BY_USER,
                     currentUser: currentUser ? currentUser.id : null
                 }));
             } catch (e) { console.warn('Ошибка сохранения данных', e); }
@@ -1572,8 +1203,8 @@
         //  ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
         // ============================================================
         let USERS = [];
-        let CONTACTS = [];
-        let MESSAGES_BY_CONTACT = {};
+        let CONTACTS_BY_USER = {}; // { userId: [ { contactId, name, avatar, color, status, lastMsg, time, unread } ] }
+        let MESSAGES_BY_USER = {}; // { userId: { contactId: [ { from, text, time, isVoice, audioUrl } ] } }
         let currentUser = null;
         let currentContactId = null;
         let isRecording = false;
@@ -1584,9 +1215,6 @@
         let isMuted = false;
         let isCameraOn = false;
         let localStream = null;
-
-        // Переменные для удаления
-        let deleteTarget = null; // { contactId, index }
 
         // ===== DOM REFS =====
         const $ = id => document.getElementById(id);
@@ -1638,53 +1266,14 @@
         const contactProfileUsername = $('contact-profile-username');
         const contactProfilePhone = $('contact-profile-phone');
 
-        // Delete overlay
-        const deleteOptionOverlay = $('delete-option-overlay');
-        const deleteForAllBtn = $('delete-for-all-btn');
-        const deleteForMeBtn = $('delete-for-me-btn');
-        const deleteCancelBtn = $('delete-cancel-btn');
-
         // ============================================================
         //  ИНИЦИАЛИЗАЦИЯ
         // ============================================================
         function init() {
             const stored = loadData();
             USERS = stored.users || [];
-            CONTACTS = stored.contacts || [];
-            MESSAGES_BY_CONTACT = stored.messages || {};
-
-            // Если нет пользователей, создаём демо
-            if (USERS.length === 0) {
-                const demoUsers = [
-                    { id: 'demo1', username: 'alex', displayName: 'Alex', email: 'alex@demo.com', phone: '+7 999 111-22-33', avatar: null },
-                    { id: 'demo2', username: 'maria', displayName: 'Maria', email: 'maria@demo.com', phone: '+7 999 444-55-66', avatar: null },
-                    { id: 'demo3', username: 'john', displayName: 'John', email: 'john@demo.com', phone: '+7 999 777-88-99', avatar: null }
-                ];
-                USERS = demoUsers;
-                // Добавляем несколько контактов (для демонстрации)
-                CONTACTS = demoUsers.map(u => ({
-                    id: u.id,
-                    name: u.displayName,
-                    avatar: u.avatar || u.displayName.charAt(0).toUpperCase(),
-                    color: '#6c8cff',
-                    status: 'online',
-                    lastMsg: 'Привет!',
-                    time: '12:00',
-                    unread: 0
-                }));
-                // Небольшие сообщения
-                MESSAGES_BY_CONTACT = {
-                    'demo1': [
-                        { from: 'them', text: 'Привет!', time: '12:00' },
-                        { from: 'me', text: 'Здравствуй!', time: '12:05' }
-                    ],
-                    'demo2': [
-                        { from: 'them', text: 'Как дела?', time: '11:30' },
-                        { from: 'me', text: 'Всё хорошо, спасибо!', time: '11:35' }
-                    ]
-                };
-                saveData();
-            }
+            CONTACTS_BY_USER = stored.contacts || {};
+            MESSAGES_BY_USER = stored.messages || {};
 
             // Восстановление темы
             const savedTheme = localStorage.getItem('pulsechat-theme');
@@ -1740,27 +1329,6 @@
                     openContactProfile(currentContactId);
                 }
             });
-
-            // Обработчики для удаления
-            deleteForAllBtn.addEventListener('click', function() {
-                if (deleteTarget) {
-                    performDelete(deleteTarget.contactId, deleteTarget.index, 'all');
-                }
-                closeDeleteOption();
-            });
-            deleteForMeBtn.addEventListener('click', function() {
-                if (deleteTarget) {
-                    performDelete(deleteTarget.contactId, deleteTarget.index, 'me');
-                }
-                closeDeleteOption();
-            });
-            deleteCancelBtn.addEventListener('click', closeDeleteOption);
-            // Закрытие по клику вне окна
-            deleteOptionOverlay.addEventListener('click', function(e) {
-                if (e.target === deleteOptionOverlay) {
-                    closeDeleteOption();
-                }
-            });
         }
 
         function applyTheme(isLight) {
@@ -1787,10 +1355,8 @@
                 const name = payload.name;
                 const picture = payload.picture;
 
-                // Ищем пользователя по email
                 let user = USERS.find(u => u.email === email);
                 if (!user) {
-                    // Создаём нового пользователя
                     const newUser = {
                         id: generateId(),
                         username: email.split('@')[0],
@@ -1803,10 +1369,16 @@
                     };
                     USERS.push(newUser);
                     user = newUser;
+                    // Инициализируем его контакты и сообщения
+                    if (!CONTACTS_BY_USER[user.id]) CONTACTS_BY_USER[user.id] = [];
+                    if (!MESSAGES_BY_USER[user.id]) MESSAGES_BY_USER[user.id] = {};
                     saveData();
                     showToast('🔐 Аккаунт создан через Google');
                 }
                 currentUser = user;
+                // Убедимся, что структура для пользователя существует
+                if (!CONTACTS_BY_USER[currentUser.id]) CONTACTS_BY_USER[currentUser.id] = [];
+                if (!MESSAGES_BY_USER[currentUser.id]) MESSAGES_BY_USER[currentUser.id] = {};
                 saveData();
                 showMessenger();
                 showToast(`👋 Добро пожаловать, ${user.displayName}!`);
@@ -1819,7 +1391,7 @@
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
             return JSON.parse(jsonPayload);
@@ -1831,7 +1403,6 @@
         function showMessenger() {
             landingPage.classList.remove('active');
             messengerPage.classList.add('active');
-            // Обновляем аватар
             updateSidebarAvatar();
             userIdTooltip.textContent = `ID: ${currentUser.id}`;
             renderContacts();
@@ -1865,9 +1436,6 @@
             chatContactStatus.classList.remove('show');
         }
 
-        // ============================================================
-        //  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-        // ============================================================
         function generateId() {
             return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         }
@@ -1885,6 +1453,7 @@
                 return;
             }
 
+            // Ищем во всех USERS, кроме текущего
             const found = USERS.filter(u =>
                 u.id !== currentUser.id &&
                 (u.username.toLowerCase().includes(q) ||
@@ -1901,7 +1470,9 @@
 
             let html = '';
             found.forEach(u => {
-                const isContact = CONTACTS.some(c => c.id === u.id);
+                // Проверяем, есть ли этот пользователь в контактах у текущего
+                const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+                const isContact = userContacts.some(c => c.id === u.id);
                 const avatarHtml = u.avatar ?
                     `<img src="${u.avatar}" alt="" />` :
                     u.displayName.charAt(0).toUpperCase();
@@ -1930,9 +1501,10 @@
             const user = USERS.find(u => u.id === userId);
             if (!user) return;
 
-            let contact = CONTACTS.find(c => c.id === userId);
+            let userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+            let contact = userContacts.find(c => c.id === userId);
             if (!contact) {
-                // Добавляем в контакты
+                // Добавляем в контакты текущего пользователя
                 const newContact = {
                     id: user.id,
                     name: user.displayName,
@@ -1943,7 +1515,8 @@
                     time: '',
                     unread: 0
                 };
-                CONTACTS.push(newContact);
+                userContacts.push(newContact);
+                CONTACTS_BY_USER[currentUser.id] = userContacts;
                 saveData();
                 renderContacts();
                 contact = newContact;
@@ -2003,12 +1576,15 @@
                 saveData();
                 updateProfileUI();
                 updateSidebarAvatar();
-                // Обновить аватарки контактов (для этого пользователя)
-                CONTACTS.forEach(c => {
-                    if (c.id === currentUser.id) {
-                        c.avatar = base64;
-                    }
-                });
+                // Обновить аватарку в контактах у всех пользователей
+                for (let uid in CONTACTS_BY_USER) {
+                    let contacts = CONTACTS_BY_USER[uid];
+                    contacts.forEach(c => {
+                        if (c.id === currentUser.id) {
+                            c.avatar = base64;
+                        }
+                    });
+                }
                 renderContacts();
                 showToast('✅ Аватар обновлён');
             };
@@ -2025,7 +1601,6 @@
                 showToast('⚠️ Заполните обязательные поля');
                 return;
             }
-            // Проверка на уникальность username
             const existingUser = USERS.find(u => u.username === newUsername && u.id !== currentUser.id);
             if (existingUser) {
                 profilePassMsg.textContent = '⚠️ Такой username уже занят';
@@ -2038,13 +1613,16 @@
             currentUser.phone = newPhone;
             updateSidebarAvatar();
 
-            // Обновляем имя в контактах (где он есть)
-            CONTACTS.forEach(c => {
-                if (c.id === currentUser.id) {
-                    c.name = newName;
-                    c.avatar = currentUser.avatar || newName.charAt(0).toUpperCase();
-                }
-            });
+            // Обновляем имя в контактах у всех пользователей
+            for (let uid in CONTACTS_BY_USER) {
+                let contacts = CONTACTS_BY_USER[uid];
+                contacts.forEach(c => {
+                    if (c.id === currentUser.id) {
+                        c.name = newName;
+                        c.avatar = currentUser.avatar || newName.charAt(0).toUpperCase();
+                    }
+                });
+            }
 
             profilePassMsg.textContent = '✅ Настройки сохранены';
             profilePassMsg.className = 'pass-msg success';
@@ -2060,9 +1638,12 @@
             const index = USERS.findIndex(u => u.id === currentUser.id);
             if (index !== -1) {
                 USERS.splice(index, 1);
-                // Удаляем контакты и сообщения этого пользователя
-                CONTACTS = CONTACTS.filter(c => c.id !== currentUser.id);
-                delete MESSAGES_BY_CONTACT[currentUser.id];
+                delete CONTACTS_BY_USER[currentUser.id];
+                delete MESSAGES_BY_USER[currentUser.id];
+                // Удаляем контакты этого пользователя у других
+                for (let uid in CONTACTS_BY_USER) {
+                    CONTACTS_BY_USER[uid] = CONTACTS_BY_USER[uid].filter(c => c.id !== currentUser.id);
+                }
                 currentUser = null;
                 saveData();
                 closeProfile();
@@ -2078,12 +1659,9 @@
         //  ПРОФИЛЬ КОНТАКТА (просмотр)
         // ============================================================
         function openContactProfile(contactId) {
-            const contact = CONTACTS.find(c => c.id === contactId);
-            if (!contact) return;
             const user = USERS.find(u => u.id === contactId);
             if (!user) return;
 
-            // Заполняем данные
             if (user.avatar) {
                 contactProfileAvatar.innerHTML = `<img src="${user.avatar}" alt="" />`;
             } else {
@@ -2104,8 +1682,9 @@
         //  КОНТАКТЫ
         // ============================================================
         function renderContacts() {
+            const userContacts = CONTACTS_BY_USER[currentUser?.id] || [];
             let html = `<div class="section-label">— Контакты —</div>`;
-            if (CONTACTS.length === 0) {
+            if (userContacts.length === 0) {
                 html += `
                     <div class="empty-contacts">
                         <i class="fas fa-user-plus"></i>
@@ -2114,7 +1693,7 @@
                     </div>
                 `;
             } else {
-                CONTACTS.forEach(c => {
+                userContacts.forEach(c => {
                     const user = USERS.find(u => u.id === c.id);
                     const statusDot = user && user.status === 'online' ? '#34d399' : '#4e5668';
                     const active = c.id === currentContactId ? 'active' : '';
@@ -2148,7 +1727,8 @@
         //  ВЫБОР КОНТАКТА
         // ============================================================
         function selectContact(id) {
-            const contact = CONTACTS.find(c => c.id === id);
+            const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+            const contact = userContacts.find(c => c.id === id);
             if (!contact) {
                 showToast('⚠️ Контакт не найден');
                 return;
@@ -2173,16 +1753,28 @@
             renderContacts();
             renderMessages(id);
             contact.unread = 0;
-            renderContacts();
+            // Обновляем контакты
+            CONTACTS_BY_USER[currentUser.id] = userContacts;
             saveData();
         }
 
         // ============================================================
         //  СООБЩЕНИЯ
         // ============================================================
+        function getMessages(contactId) {
+            const userMessages = MESSAGES_BY_USER[currentUser.id] || {};
+            return userMessages[contactId] || [];
+        }
+
+        function setMessages(contactId, msgs) {
+            if (!MESSAGES_BY_USER[currentUser.id]) MESSAGES_BY_USER[currentUser.id] = {};
+            MESSAGES_BY_USER[currentUser.id][contactId] = msgs;
+            saveData();
+        }
+
         function renderMessages(contactId) {
-            const msgs = MESSAGES_BY_CONTACT[contactId] || [];
-            const contact = CONTACTS.find(c => c.id === contactId);
+            const msgs = getMessages(contactId);
+            const contact = (CONTACTS_BY_USER[currentUser.id] || []).find(c => c.id === contactId);
             let html = `<div class="system-msg">— ${contact?.name || 'Чат'} —</div>`;
             if (msgs.length === 0) {
                 html += `<div class="system-msg" style="color:var(--text-muted);">Нет сообщений. Напишите что-нибудь!</div>`;
@@ -2204,13 +1796,12 @@
                         content = m.text || '';
                         content = content.replace(/:\)/g, '😊').replace(/:\(/g, '😢').replace(/:D/g, '😄').replace(/<3/g, '❤️');
                     }
-                    // Кнопки действий для своих сообщений
                     let actions = '';
                     if (m.from === 'me') {
                         actions = `
                             <div class="msg-actions">
                                 <button onclick="forwardMessage('${contactId}', ${idx})" title="Переслать"><i class="fas fa-share"></i></button>
-                                <button class="danger" onclick="openDeleteOption('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
+                                <button class="danger" onclick="deleteMessage('${contactId}', ${idx})" title="Удалить"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         `;
                     }
@@ -2239,7 +1830,8 @@
                 showToast('⚠️ Выберите контакт');
                 return;
             }
-            const contact = CONTACTS.find(c => c.id === currentContactId);
+            const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+            const contact = userContacts.find(c => c.id === currentContactId);
             if (!contact) {
                 showToast('⚠️ Контакт не найден');
                 return;
@@ -2249,25 +1841,25 @@
             const time = now.getHours().toString().padStart(2, '0') + ':' +
                 now.getMinutes().toString().padStart(2, '0');
 
-            if (!MESSAGES_BY_CONTACT[currentContactId]) {
-                MESSAGES_BY_CONTACT[currentContactId] = [];
-            }
-            MESSAGES_BY_CONTACT[currentContactId].push({
+            let msgs = getMessages(currentContactId);
+            msgs.push({
                 from: 'me',
                 text: text,
                 time: time
             });
+            setMessages(currentContactId, msgs);
 
             contact.lastMsg = text;
             contact.time = time;
+            CONTACTS_BY_USER[currentUser.id] = userContacts;
+            saveData();
 
             msgInput.value = '';
             msgInput.style.height = 'auto';
             renderMessages(currentContactId);
             renderContacts();
-            saveData();
 
-            // Эмуляция ответа (для демонстрации)
+            // Эмуляция ответа (для демонстрации) - теперь отправляем от имени контакта в чат текущего пользователя
             if (Math.random() > 0.5) {
                 setTimeout(() => {
                     const replies = ['😊 Отлично!', 'Понял!', 'Спасибо!', 'Договорились', 'Круто!', 'Да, давай', 'Ок!'];
@@ -2275,16 +1867,19 @@
                     const now2 = new Date();
                     const time2 = now2.getHours().toString().padStart(2, '0') + ':' +
                         now2.getMinutes().toString().padStart(2, '0');
-                    MESSAGES_BY_CONTACT[currentContactId].push({
+                    let msgs2 = getMessages(currentContactId);
+                    msgs2.push({
                         from: 'them',
                         text: reply,
                         time: time2
                     });
+                    setMessages(currentContactId, msgs2);
                     contact.lastMsg = reply;
                     contact.time = time2;
+                    CONTACTS_BY_USER[currentUser.id] = userContacts;
+                    saveData();
                     renderMessages(currentContactId);
                     renderContacts();
-                    saveData();
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 }, 1200 + Math.random() * 1800);
             }
@@ -2298,10 +1893,10 @@
         }
 
         // ============================================================
-        //  ПЕРЕСЫЛКА СООБЩЕНИЙ
+        //  ПЕРЕСЫЛКА
         // ============================================================
         function forwardMessage(contactId, index) {
-            const msgs = MESSAGES_BY_CONTACT[contactId];
+            const msgs = getMessages(contactId);
             if (!msgs || index < 0 || index >= msgs.length) return;
             const msg = msgs[index];
             msgInput.value = msg.text || '';
@@ -2310,43 +1905,37 @@
         }
 
         // ============================================================
-        //  УДАЛЕНИЕ СООБЩЕНИЙ (с выбором)
+        //  УДАЛЕНИЕ (только для себя)
         // ============================================================
-        function openDeleteOption(contactId, index) {
-            deleteTarget = { contactId, index };
-            deleteOptionOverlay.classList.add('show');
-        }
-
-        function closeDeleteOption() {
-            deleteOptionOverlay.classList.remove('show');
-            deleteTarget = null;
-        }
-
-        function performDelete(contactId, index, mode) {
-            const msgs = MESSAGES_BY_CONTACT[contactId];
+        function deleteMessage(contactId, index) {
+            if (!confirm('Удалить это сообщение только для себя?')) return;
+            let msgs = getMessages(contactId);
             if (!msgs || index < 0 || index >= msgs.length) return;
-            const msg = msgs[index];
-            // Для личных чатов оба режима работают одинаково (удаляем у себя)
-            // Для групповых можно расширить логику, но в демо-версии удаляем у всех
             msgs.splice(index, 1);
+            setMessages(contactId, msgs);
             if (msgs.length === 0) {
-                const contact = CONTACTS.find(c => c.id === contactId);
+                const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+                const contact = userContacts.find(c => c.id === contactId);
                 if (contact) {
                     contact.lastMsg = '';
                     contact.time = '';
+                    CONTACTS_BY_USER[currentUser.id] = userContacts;
+                    saveData();
                 }
             } else {
                 const last = msgs[msgs.length - 1];
-                const contact = CONTACTS.find(c => c.id === contactId);
+                const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+                const contact = userContacts.find(c => c.id === contactId);
                 if (contact) {
                     contact.lastMsg = last.text || '';
                     contact.time = last.time || '';
+                    CONTACTS_BY_USER[currentUser.id] = userContacts;
+                    saveData();
                 }
             }
             renderMessages(contactId);
             renderContacts();
-            saveData();
-            showToast(mode === 'all' ? '🗑 Сообщение удалено для всех' : '🗑 Сообщение удалено для себя');
+            showToast('🗑 Сообщение удалено для вас');
         }
 
         // ============================================================
@@ -2402,28 +1991,27 @@
                     const time = now.getHours().toString().padStart(2, '0') + ':' +
                         now.getMinutes().toString().padStart(2, '0');
 
-                    if (!MESSAGES_BY_CONTACT[currentContactId]) {
-                        MESSAGES_BY_CONTACT[currentContactId] = [];
-                    }
-                    MESSAGES_BY_CONTACT[currentContactId].push({
+                    let msgs = getMessages(currentContactId);
+                    msgs.push({
                         from: 'me',
                         text: '🎤 Голосовое сообщение',
                         time: time,
                         isVoice: true,
                         audioUrl: audioUrl
                     });
+                    setMessages(currentContactId, msgs);
 
-                    const contact = CONTACTS.find(c => c.id === currentContactId);
+                    const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+                    const contact = userContacts.find(c => c.id === currentContactId);
                     if (contact) {
                         contact.lastMsg = '🎤 Голосовое';
                         contact.time = time;
+                        CONTACTS_BY_USER[currentUser.id] = userContacts;
                     }
-
+                    saveData();
                     renderMessages(currentContactId);
                     renderContacts();
                     showToast('✅ Голосовое отправлено!');
-                    saveData();
-
                     stream.getTracks().forEach(t => t.stop());
                 };
 
@@ -2445,7 +2033,8 @@
         let callContactId = null;
 
         function startCall() {
-            const contact = CONTACTS.find(c => c.id === currentContactId);
+            const userContacts = CONTACTS_BY_USER[currentUser.id] || [];
+            const contact = userContacts.find(c => c.id === currentContactId);
             if (!contact) {
                 showToast('⚠️ Выберите контакт');
                 return;
@@ -2536,19 +2125,18 @@
             remoteVideo.style.display = 'none';
             callOverlay.classList.remove('show');
             showToast('📞 Звонок завершён');
-            const contact = CONTACTS.find(c => c.id === callContactId);
+            const contact = (CONTACTS_BY_USER[currentUser.id] || []).find(c => c.id === callContactId);
             if (contact && currentContactId === callContactId) {
                 const now = new Date();
                 const time = now.getHours().toString().padStart(2, '0') + ':' +
                     now.getMinutes().toString().padStart(2, '0');
-                if (!MESSAGES_BY_CONTACT[currentContactId]) {
-                    MESSAGES_BY_CONTACT[currentContactId] = [];
-                }
-                MESSAGES_BY_CONTACT[currentContactId].push({
+                let msgs = getMessages(currentContactId);
+                msgs.push({
                     from: 'system',
                     text: `📞 Звонок с ${contact.name} (${Math.floor(callSeconds/60)}:${String(callSeconds%60).padStart(2,'0')})`,
                     time: time
                 });
+                setMessages(currentContactId, msgs);
                 renderMessages(currentContactId);
                 saveData();
             }
@@ -2579,7 +2167,6 @@
                 showToast('👋 До встречи!');
                 closeProfile();
                 closeContactProfile();
-                closeDeleteOption();
             }
         }
 
@@ -2620,7 +2207,6 @@
                 if (profileOverlay.classList.contains('show')) closeProfile();
                 if (callOverlay.classList.contains('show')) endCall();
                 if (contactProfileOverlay.classList.contains('show')) closeContactProfile();
-                if (deleteOptionOverlay.classList.contains('show')) closeDeleteOption();
                 if (emojiPickerVisible) {
                     emojiPickerVisible = false;
                     emojiPicker.style.display = 'none';
@@ -2632,11 +2218,10 @@
         //  ЗАПУСК
         // ============================================================
         init();
-        console.log('🚀 PulseChat загружен (только Google вход)');
-        console.log('👤 Все пользователи сохраняются в localStorage.');
-        console.log('🔍 Поиск работает по имени, @username и телефону.');
-        console.log('📱 При клике на результат поиска контакт добавляется и открывается чат.');
-        console.log('🗑 Удаление: открывается выбор "для всех" или "для себя".');
+        console.log('🚀 PulseChat загружен (мультипользовательский режим)');
+        console.log('👤 Каждый пользователь видит только свои контакты и сообщения.');
+        console.log('🔍 Поиск работает по всем пользователям.');
+        console.log('🗑 Удаление только для себя.');
         console.log('👤 Клик по шапке чата или аватарке контакта открывает профиль.');
     </script>
 </body>
